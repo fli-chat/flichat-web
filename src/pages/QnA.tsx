@@ -137,7 +137,7 @@ export default function QnA() {
   };
 
   return (
-    <div className="w-full p-4 sm:p-6">
+    <div className="w-full p-0 sm:p-6">
       {/* 헤더 */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">자주 묻는 질문</h1>
