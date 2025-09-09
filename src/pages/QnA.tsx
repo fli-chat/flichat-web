@@ -137,7 +137,7 @@ export default function QnA() {
   };
 
   return (
-    <div className="w-full p-6">
+    <div className="w-full p-4 sm:p-6">
       {/* 헤더 */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">자주 묻는 질문</h1>
@@ -178,7 +178,7 @@ export default function QnA() {
             >
               <button
                 onClick={() => toggleQuestion(question.id)}
-                className="w-full px-6 py-4 text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
+                className="w-full px-4 sm:px-6 py-4 text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
@@ -206,7 +206,7 @@ export default function QnA() {
               </button>
 
               {question.isOpen && (
-                <div className="px-6 pb-4">
+                <div className="px-4 sm:px-6 pb-4">
                   <div className="border-t border-gray-100 pt-4">
                     <p className="text-gray-700 leading-relaxed">
                       {question.answer}
@@ -220,7 +220,7 @@ export default function QnA() {
       </div>
 
       {/* 추가 도움말 */}
-      <div className="mt-12 bg-blue-50 rounded-lg p-6">
+      <div className="mt-12 bg-blue-50 rounded-lg p-4 sm:p-6">
         <div className="flex items-start space-x-4">
           <div className="flex-shrink-0">
             <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
@@ -248,9 +248,9 @@ export default function QnA() {
 
       {/* 문의 모달 */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold text-gray-900">고객센터 문의</h2>
                 <button
