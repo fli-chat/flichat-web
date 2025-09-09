@@ -237,7 +237,7 @@ export default function QnA() {
             <div className="flex space-x-4 justify-center">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="bg-blue-500 hover:bg-blue-600  text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
               >
                 고객센터 문의
               </button>
