@@ -38,18 +38,28 @@ export default function ChatPage() {
           <div className="w-[28px] h-[28px]">
             <img src={profile} alt="user" className="w-[28px] h-full" />
           </div>
-          <div className="flex flex-col items-start gap-[6px]">
-            <p className="caption font-medium text-font-primary">Jay Park</p>
-            <div className="bg-semantic-teriary rounded-[10px] rounded-tl-none px-[20px] py-[10px] max-w-[253px] text-left">
-              <p className="font-medium text-font-primary text-[14px]">
-                티모시 샬라메 진짜 연기 미쳤음..
-                그동안 필모 중에 인생작입니다..
-              </p>
+          <div className="flex items-end gap-[6px]">
+            <div className="flex flex-col items-start gap-[6px]">
+              <p className="caption font-medium text-font-primary">Jay Park</p>
+              <div className="bg-semantic-teriary rounded-[10px] rounded-tl-none px-[20px] py-[10px] max-w-[253px] text-left">
+                <p className="font-medium text-font-primary text-[14px]">
+                  티모시 샬라메 진짜 연기 미쳤음..
+                  그동안 필모 중에 인생작입니다..
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start flex-col">
+              <p className="text-font-secondary text-[9px] font-medium">읽음 13</p>
+              <p className="text-font-secondary text-[9px] font-medium">오후 2:40</p>
             </div>
           </div>
         </div>
 
         <div className="flex items-end justify-end gap-[8px]">
+          <div className="flex items-end flex-col">
+            <p className="text-font-secondary text-[9px] font-medium">읽음 13</p>
+            <p className="text-font-secondary text-[9px] font-medium">오후 2:40</p>
+          </div>
           <div className="flex flex-col items-start gap-[6px]">
             <div className="bg-system-mint2 rounded-[10px] px-[20px] py-[10px] max-w-[253px] text-left rounded-tr-none">
               <p className="font-medium text-font-dark text-[14px]">
@@ -58,9 +68,14 @@ export default function ChatPage() {
               </p>
             </div>
           </div>
+
         </div>
 
         <div className="flex items-end justify-end gap-[8px]">
+          <div className="flex items-end flex-col">
+            <p className="text-font-secondary text-[9px] font-medium">읽음 13</p>
+            <p className="text-font-secondary text-[9px] font-medium">오후 2:40</p>
+          </div>
           <div className="flex flex-col items-start gap-[6px]">
             <div className="bg-system-mint2 rounded-[10px] px-[20px] py-[10px] max-w-[253px] text-left rounded-tr-none">
               <p className="font-medium text-font-dark text-[14px]">
