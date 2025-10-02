@@ -2,13 +2,19 @@ import { useState } from "react";
 import user from "../assets/icons/profile.svg";
 import profile from "../assets/icons/purple.svg";
 import album from "../assets/icons/album.svg";
+import ProfileModal from "../components/ProfileModal";
 
 export default function ChatPage() {
   const [message, setMessage] = useState("");
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
   };
+
+  const onClickProfile = () => {
+    setIsProfileModalOpen(true);
+  }
 
   const handleSend = () => {
     if (message.trim()) {
@@ -35,7 +41,7 @@ export default function ChatPage() {
       <div className="flex flex-col gap-[12px] mx-[20px] mt-[24px]">
         {/* 채팅 메세지 */}
         <div className="flex items-start gap-[8px]">
-          <div className="w-[28px] h-[28px]">
+          <div className="w-[28px] h-[28px] cursor-pointer" onClick={onClickProfile}>
             <img src={profile} alt="user" className="w-[28px] h-full" />
           </div>
           <div className="flex items-end gap-[6px]">
@@ -111,6 +117,10 @@ export default function ChatPage() {
           </div>
         </div>
       </div>
+
+      {isProfileModalOpen && (
+        <ProfileModal setIsProfileModalOpen={setIsProfileModalOpen} />
+      )}
     </div>
   );
 }
