@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import google from "../assets/icons/logo/google.svg";
 import { GoogleLogin, GoogleOAuthProvider, type CredentialResponse } from '@react-oauth/google';
@@ -38,10 +38,30 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = () => {
 
   return (
     <GoogleOAuthProvider clientId="430508454350-rkt5ue8tjk5qkroddliv2nb0d1po51gr.apps.googleusercontent.com">
-      <GoogleLogin
-        onSuccess={handleSuccess}
-        onError={() => { console.log('error'); }}
-      />
+      <div className='relative'>
+        <button className="relative w-[450px] h-[48px] bg-transparent border border-font-point font-semibold rounded-[4px] flex items-center justify-center transition-all duration-200 cursor-pointer">
+          <img src={google} alt="google" className="w-6 h-6 absolute left-4" />
+          <p className="body1 text-font-point   font-medium">
+            Google로 시작하기
+          </p>
+        </button>
+
+        <div className="absolute inset-0 opacity-0 pointer-events-auto border border-red-700">
+          <GoogleLogin
+            onSuccess={handleSuccess}
+            onError={() => { console.log('error'); }}
+            useOneTap={false}
+            theme="outline"
+            size="large"
+            width="450"
+            text="continue_with"
+            shape="square"
+            logo_alignment="left"
+            locale="ko"
+            auto_select={false}
+          />
+        </div>
+      </div>
     </GoogleOAuthProvider>
   );
 };

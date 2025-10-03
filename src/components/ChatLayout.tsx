@@ -1,9 +1,18 @@
 import { Outlet } from "react-router-dom";
+import UserSidebar from "./UserSidebar";
+import { useSidebar } from "../store/useSidebar";
 
 export default function ChatLayout() {
+  const { isOpen } = useSidebar();
+
+
   return (
-    <div className="h-screen max-w-[750px] bg-semantic-primary mx-auto">
+    <div className="relative h-screen max-w-[750px] bg-semantic-primary mx-auto overflow-hidden">
       <Outlet />
+
+      {isOpen && (
+        <UserSidebar />
+      )}
     </div>
   )
 }

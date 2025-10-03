@@ -3,8 +3,11 @@ import user from "../assets/icons/profile.svg";
 import profile from "../assets/icons/purple.svg";
 import album from "../assets/icons/album.svg";
 import ProfileModal from "../components/ProfileModal";
+import { useSidebar } from "../store/useSidebar";
 
 export default function ChatPage() {
+  const { setIsOpen } = useSidebar();
+
   const [message, setMessage] = useState("");
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
@@ -14,7 +17,8 @@ export default function ChatPage() {
 
   const onClickProfile = () => {
     setIsProfileModalOpen(true);
-  }
+  };
+
 
   const handleSend = () => {
     if (message.trim()) {
@@ -32,7 +36,7 @@ export default function ChatPage() {
           <p className="text-font-point title4 font-bold">듄</p>
           <p className="text-font-secondary title4 font-medium">110명</p>
         </div>
-        <div className="cursor-pointer">
+        <div className="cursor-pointer" onClick={() => setIsOpen(true)}>
           <img src={user} alt="close" />
         </div>
       </div>
@@ -41,7 +45,10 @@ export default function ChatPage() {
       <div className="flex flex-col gap-[12px] mx-[20px] mt-[24px]">
         {/* 채팅 메세지 */}
         <div className="flex items-start gap-[8px]">
-          <div className="w-[28px] h-[28px] cursor-pointer" onClick={onClickProfile}>
+          <div
+            className="w-[28px] h-[28px] cursor-pointer hover:opacity-80 transition-opacity duration-200"
+            onClick={onClickProfile}
+          >
             <img src={profile} alt="user" className="w-[28px] h-full" />
           </div>
           <div className="flex items-end gap-[6px]">
@@ -121,6 +128,7 @@ export default function ChatPage() {
       {isProfileModalOpen && (
         <ProfileModal setIsProfileModalOpen={setIsProfileModalOpen} />
       )}
+
     </div>
   );
 }
