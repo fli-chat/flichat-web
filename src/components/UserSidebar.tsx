@@ -3,11 +3,38 @@ import edit from "../assets/icons/edit.svg";
 import profile from "../assets/icons/purple.svg";
 import { useSidebar } from "../store/useSidebar";
 import { AnimatePresence, motion } from "framer-motion";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AuthApi } from "../apis/auth.api";
+import { useNavigate } from "react-router-dom";
+import { deleteCookie } from "../utils/cookie";
+import useAuthStore, { AuthStatus } from "../store/useAuth";
 
 
 
 export default function UserSidebar() {
+  const queryClient = useQueryClient();
+
   const { isOpen, setIsOpen } = useSidebar();
+  const { setAuthStatus } = useAuthStore();
+
+  const navigate = useNavigate();
+
+  const { mutateAsync: logoutMutation } = useMutation({
+    mutationFn: AuthApi.postLogout,
+    onSuccess: () => {
+      localStorage.removeItem('accessToken');
+      deleteCookie('refreshToken', { path: '/' });
+      setIsOpen(false);
+      setAuthStatus(AuthStatus.unauthorized);
+      queryClient.clear();
+
+      navigate('/chat/login');
+    },
+  });
+
+  const onClickLogout = () => {
+    logoutMutation();
+  }
 
   // ESC 키로 사이드바 닫기
   useEffect(() => {
@@ -33,14 +60,6 @@ export default function UserSidebar() {
     <AnimatePresence>
       {isOpen && (
         <>
-          <motion.div
-            key="overlay"
-            className="fixed inset-0 z-40 bg-black/50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
-          />
           <motion.aside
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
@@ -97,7 +116,7 @@ export default function UserSidebar() {
 
             {/* 로그아웃 버튼 */}
             <div className="absolute bottom-4 left-0 right-0 p-[20px]">
-              <button className=" text-white underline text-center py-[12px] hover:text-gray-300 transition-colors duration-200">
+              <button className=" text-white underline text-center py-[12px] hover:text-gray-300 transition-colors duration-200" onClick={onClickLogout} >
                 로그아웃
               </button>
             </div>

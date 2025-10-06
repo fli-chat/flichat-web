@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import KakaoLogin from "react-kakao-login";
-import { api } from "../apis/axios";
 import { useNavigate } from "react-router-dom";
 import kakao from "../assets/icons/logo/kakao.svg";
+import { AuthApi } from "../apis/auth.api";
+import { setCookie } from "../utils/cookie";
+import useAuthStore, { AuthStatus } from "../store/useAuth";
 
 // interface KakaoResponse {
 //   profile: {
@@ -20,15 +23,18 @@ import kakao from "../assets/icons/logo/kakao.svg";
 export default function KakaoLoginButton() {
   const navigate = useNavigate();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSuccess = async (kakaoData: any) => {
-    const response = await api.post('/api/v1/oauth/login', {
-      oauthProvider: 'KAKAO',
-      identifier: kakaoData.response.id_token,
-      token: kakaoData.response.access_token,
-    });
+    const { id_token, access_token } = kakaoData.response;
+    const response = await AuthApi.postLogin('KAKAO', id_token, access_token);
+    console.log(response);
+    const accessToken = response.data.accessToken;
+    const refreshToken = response.data.refreshToken;
 
-    if (response.status === 200) {
+    if (response.code === 200) {
+      localStorage.setItem('accessToken', accessToken);
+      setCookie('refreshToken', refreshToken, { path: '/' });
+      useAuthStore.getState().setAuthStatus(AuthStatus.authorized);
+
       navigate('/chat');
     }
   }
