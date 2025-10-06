@@ -1,13 +1,20 @@
 import { useEffect } from "react";
 import edit from "../assets/icons/edit.svg";
-import profile from "../assets/icons/purple.svg";
+
+import purple from "../assets/icons/profile_dafault_purple.svg";
+import red from "../assets/icons/profile_dafault_coral.svg";
+import blue from "../assets/icons/profile_dafault_skyblue.svg";
+import green from "../assets/icons/profile_dafault_mint.svg";
+import yellow from "../assets/icons/profile_dafault_yellow.svg";
+
 import { useSidebar } from "../store/useSidebar";
 import { AnimatePresence, motion } from "framer-motion";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AuthApi } from "../apis/auth.api";
 import { useNavigate } from "react-router-dom";
 import { deleteCookie } from "../utils/cookie";
 import useAuthStore, { AuthStatus } from "../store/useAuth";
+import { ProfileColorType, UserApi } from "../apis/user.api";
 
 
 
@@ -18,6 +25,13 @@ export default function UserSidebar() {
   const { setAuthStatus } = useAuthStore();
 
   const navigate = useNavigate();
+
+  const { data: userInfoData } = useQuery({
+    queryKey: ['userInfo'],
+    queryFn: () => UserApi.getUser(),
+    staleTime: 1000 * 60 * 60,
+    gcTime: 1000 * 60 * 60,
+  });
 
   const { mutateAsync: logoutMutation } = useMutation({
     mutationFn: AuthApi.postLogout,
@@ -36,6 +50,20 @@ export default function UserSidebar() {
     logoutMutation();
   }
 
+  const convertProfileColorType = (profileColorType: ProfileColorType) => {
+    switch (profileColorType) {
+      case ProfileColorType.PURPLE:
+        return purple;
+      case ProfileColorType.RED:
+        return red;
+      case ProfileColorType.GREEN:
+        return green;
+      case ProfileColorType.BLUE:
+        return blue;
+      case ProfileColorType.YELLOW:
+        return yellow;
+    }
+  }
   // ESC 키로 사이드바 닫기
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -92,11 +120,11 @@ export default function UserSidebar() {
             <div className="flex flex-col items-center px-[20px] py-[32px]">
               {/* 프로필 이미지 */}
               <div className="mb-[20px]">
-                <img src={profile} alt="profile" className="w-[77px] h-[77px]" />
+                <img src={convertProfileColorType(userInfoData?.data.profileColorType as ProfileColorType | ProfileColorType.PURPLE)} alt="profile" className="w-[77px] h-[77px]" />
               </div>
 
               {/* 사용자 이름 */}
-              <h2 className="title4 font-bold text-font-primary">Jane Doe</h2>
+              <h2 className="title4 font-bold text-font-primary">{userInfoData?.data.nickName}</h2>
             </div>
 
             {/* 구분선 */}
