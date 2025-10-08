@@ -87,9 +87,10 @@ const makeErrorInterceptor =
         return new Promise((resolve, reject) => {
           failedQueue.push({
             resolve: (token: string) => {
-              try {
-                withAuthHeader(originalConfig, token);
-                resolve(client(originalConfig)); // 원본 config로 재요청
+                try {
+                  originalConfig.headers = { ...(originalConfig.headers as any) };
+                  withAuthHeader(originalConfig, token);
+                  resolve(client.request(originalConfig)); 
               } catch (e) {
                 reject(e);
               }

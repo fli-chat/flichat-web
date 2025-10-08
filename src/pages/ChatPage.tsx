@@ -3,15 +3,16 @@ import user from "../assets/icons/profile.svg";
 import profile from "../assets/icons/purple.svg";
 import album from "../assets/icons/album.svg";
 import ProfileModal from "../components/ProfileModal";
+import LoginModal from "../components/LoginModal";
+import AppInstallModal from "../components/AppInstallModal";
 import { useSidebar } from "../store/useSidebar";
 import { useQuery } from "@tanstack/react-query";
 import { ChatApi } from "../apis/chat.api";
 import { formatKoreanTime } from "../utils/format";
-import LoginModal from "../components/LoginModal";
 import { UserApi } from "../apis/user.api";
 import useStompChat from "../hooks/useStompChat";
 
-const roomId = 108;
+const roomId = 3;
 
 export default function ChatPage() {
   const { setIsOpen } = useSidebar();
@@ -20,8 +21,10 @@ export default function ChatPage() {
 
   const [message, setMessage] = useState("");
   const [lastSendTime, setLastSendTime] = useState(0);
+  const [sentMessageCount, setSentMessageCount] = useState(0);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isAppInstallModalOpen, setIsAppInstallModalOpen] = useState(false);
 
   const { data: chatMessageData, refetch: refetchChatMessage } = useQuery({
     queryKey: ['chatMessage', roomId],
@@ -76,6 +79,15 @@ export default function ChatPage() {
     setLastSendTime(now);
     console.log("메시지 전송:", message);
     sendMessage(message);
+
+    // 메시지 카운트 증가
+    const newCount = sentMessageCount + 1;
+    setSentMessageCount(newCount);
+
+    // 5번째 메시지일 때 앱 설치 모달 표시
+    if (newCount === 5) {
+      setIsAppInstallModalOpen(true);
+    }
 
     await refetchChatMessage();
     setMessage(""); // 전송 후 입력창 초기화
@@ -198,6 +210,11 @@ export default function ChatPage() {
 
       {isLoginModalOpen && (
         <LoginModal setIsLoginModalOpen={setIsLoginModalOpen} />
+      )}
+
+      {/* 앱 설치 모달 추가 */}
+      {isAppInstallModalOpen && (
+        <AppInstallModal setIsAppInstallModalOpen={setIsAppInstallModalOpen} />
       )}
 
     </div>
