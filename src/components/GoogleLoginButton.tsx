@@ -32,14 +32,15 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = () => {
 
     if (response.status === 200) {
       navigate('/chat');
+      window.location.reload();
     }
   }
 
 
   return (
     <GoogleOAuthProvider clientId="430508454350-rkt5ue8tjk5qkroddliv2nb0d1po51gr.apps.googleusercontent.com">
-      <div className='relative'>
-        <button className="relative w-[450px] h-[48px] bg-transparent border border-font-point font-semibold rounded-[4px] flex items-center justify-center transition-all duration-200 cursor-pointer">
+      <div className='relative w-full cursor-pointer'>
+        <button className="relative w-full h-[48px] bg-transparent border border-font-point font-semibold rounded-[4px] flex items-center justify-center transition-all duration-200 cursor-pointer">
           <img src={google} alt="google" className="w-6 h-6 absolute left-4" />
           <p className="body1 text-font-point   font-medium">
             Google로 시작하기

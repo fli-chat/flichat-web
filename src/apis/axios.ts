@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { getCookie, setCookie } from "../utils/cookie";
-import useAuth, { AuthStatus } from "../store/useAuth";
 import { AuthApi } from "./auth.api";
 
 type RetriableConfig = InternalAxiosRequestConfig & { _retry?: boolean };
@@ -44,12 +43,12 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = [];
 };
 
-const redirectToLogin = async () => {
-  if (window.location.pathname !== "/") {
-    window.location.replace("/chat/login");
-  }
-  await useAuth.getState().setAuthStatus(AuthStatus.unauthorized);
-};
+// const redirectToLogin = async () => {
+//   if (window.location.pathname !== "/") {
+//     window.location.replace("/chat/login");
+//   }
+//   await useAuth.getState().setAuthStatus(AuthStatus.unauthorized);
+// };
 
 // 공통 401 처리기: 어떤 axios 인스턴스에서 호출됐는지에 따라 재시도 시 인스턴스를 주입
 const makeResponseInterceptor =
@@ -136,7 +135,7 @@ const makeErrorInterceptor =
       } catch (refreshErr) {
         // 대기열 전부 실패 처리
         processQueue(refreshErr, null);
-        await redirectToLogin();
+        // await redirectToLogin();
         return Promise.reject(refreshErr);
       } finally {
         isRefreshing = false;

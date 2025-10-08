@@ -7,6 +7,8 @@ import { useSidebar } from "../store/useSidebar";
 import { useQuery } from "@tanstack/react-query";
 import { ChatApi } from "../apis/chat.api";
 import { formatKoreanTime } from "../utils/format";
+import LoginModal from "../components/LoginModal";
+import { UserApi } from "../apis/user.api";
 
 const roomId = 3;
 const userId = 229520437022183424;
@@ -16,12 +18,32 @@ export default function ChatPage() {
 
   const [message, setMessage] = useState("");
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const { data: chatMessageData } = useQuery({
     queryKey: ['chatMessage', roomId],
     queryFn: () => ChatApi.getChatHistory(roomId),
     retry: false,
   })
+
+  const { data: chatRoomData } = useQuery({
+    queryKey: ['chatRoom', roomId],
+    queryFn: () => ChatApi.getChatRoomInfo(roomId),
+    retry: false,
+  })
+
+  const { data: userInfoData } = useQuery({
+    queryKey: ['userInfo'],
+    queryFn: () => UserApi.getUser(),
+    retry: false,
+  })
+
+  const onClickInput = () => {
+    if (!userInfoData?.data) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+  }
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
@@ -45,8 +67,8 @@ export default function ChatPage() {
       {/* header */}
       <div className="flex justify-between items-center px-[20px] py-[18px]">
         <div className="flex items-center gap-[8px] ">
-          <p className="text-font-point title4 font-bold">듄</p>
-          <p className="text-font-secondary title4 font-medium">110명</p>
+          <p className="text-font-point title4 font-bold">{chatRoomData?.data.title}</p>
+          <p className="text-font-secondary title4 font-medium">{chatRoomData?.data.joinedUserCount}명</p>
         </div>
         <div className="cursor-pointer" onClick={() => setIsOpen(true)}>
           <img src={user} alt="close" />
@@ -107,7 +129,7 @@ export default function ChatPage() {
 
       {/* footer */}
       <div className="absolute bottom-0 left-0 right-0 w-full h-[116px] bg-semantic-secondary flex flex-col justify-between p-[16px]">
-        <div>
+        <div onClick={onClickInput}>
           <textarea
             rows={2}
             value={message}
@@ -133,6 +155,10 @@ export default function ChatPage() {
 
       {isProfileModalOpen && (
         <ProfileModal setIsProfileModalOpen={setIsProfileModalOpen} />
+      )}
+
+      {isLoginModalOpen && (
+        <LoginModal setIsLoginModalOpen={setIsLoginModalOpen} />
       )}
 
     </div>

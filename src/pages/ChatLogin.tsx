@@ -20,7 +20,7 @@ export default function ChatLogin() {
       </div>
 
       {/* 로그인 버튼들 */}
-      <div className="w-full flex flex-col items-center space-y-[12px] mb-[104px]">
+      <div className="w-[450px] flex flex-col items-center space-y-[12px] mb-[104px]">
         <KakaoLoginButton />
         <GoogleLoginButton />
       </div>

@@ -4,7 +4,6 @@ import QnA from "../pages/QnA";
 import ChatLayout from "../components/ChatLayout";
 import ChatLogin from "../pages/ChatLogin";
 import ChatPage from "../pages/ChatPage";
-import AuthProvider from "./AuthProvider";
 
 export const routes: RouteObject[] = [
   {
@@ -21,7 +20,7 @@ export const routes: RouteObject[] = [
     children: [
       {
         path: '',
-        element: <AuthProvider><ChatPage /></AuthProvider>,
+        element: <ChatPage />,
       },
       {
         path: 'login',

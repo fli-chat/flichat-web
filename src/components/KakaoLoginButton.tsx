@@ -36,6 +36,7 @@ export default function KakaoLoginButton() {
       useAuthStore.getState().setAuthStatus(AuthStatus.authorized);
 
       navigate('/chat');
+      window.location.reload();
     }
   }
 
@@ -50,9 +51,11 @@ export default function KakaoLoginButton() {
           color: '#141517',
           fontSize: '16px',
           fontWeight: 'bold',
+          borderRadius: '4px',
+          width: '100%',
         }}
       >
-        <button className="relative w-[450px] h-[48px] bg-[#FFE539]  text-semantic-primary font-semibold rounded-[4px] flex items-center justify-center transition-all duration-200">
+        <button className="relative w-full h-[48px] bg-[#FFE539] text-semantic-primary font-semibold rounded-[4px] flex items-center justify-center transition-all duration-200">
           <img src={kakao} alt="Kakao" className="w-6 h-6 absolute left-4" />
           <p className="body1 text-font-dark font-medium">
             카카오로 시작하기

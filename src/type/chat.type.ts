@@ -7,3 +7,13 @@ export interface ChatMessage {
   timeStamp: string;
   userId: number;
 }
+
+export interface ChatRoom {
+  chatRoomId: number;
+  title: string;
+  genre: string;
+  releaseYear: string;
+  posterUrl: string;
+  alarmOn: boolean;
+  joinedUserCount: number;
+}
