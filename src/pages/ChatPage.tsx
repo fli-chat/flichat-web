@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import user from "../assets/icons/profile.svg";
 import profile from "../assets/icons/purple.svg";
 import album from "../assets/icons/album.svg";
@@ -16,9 +16,10 @@ const roomId = 108;
 export default function ChatPage() {
   const { setIsOpen } = useSidebar();
 
-
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const [message, setMessage] = useState("");
+  const [lastSendTime, setLastSendTime] = useState(0);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
@@ -40,7 +41,7 @@ export default function ChatPage() {
     retry: false,
   })
 
-  const { messages, sendMessage } = useStompChat(roomId, userInfoData?.data?.userId ?? '');
+  const { messages, setMessages, sendMessage } = useStompChat(roomId, userInfoData?.data?.userId ?? '');
 
 
   const onClickInput = () => {
@@ -59,22 +60,45 @@ export default function ChatPage() {
   };
 
 
-  const keyboardDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+  const keyboardDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
+      e.preventDefault();
       handleSend();
     }
   }
 
   const handleSend = async () => {
-    if (message.trim()) {
-      // 메시지 전송 로직
-      console.log("메시지 전송:", message);
-      sendMessage(message);
-
-      await refetchChatMessage();
-      setMessage(""); // 전송 후 입력창 초기화
+    const now = Date.now();
+    if (!message.trim() || now - lastSendTime < 500) {
+      return;
     }
+
+    setLastSendTime(now);
+    console.log("메시지 전송:", message);
+    sendMessage(message);
+
+    await refetchChatMessage();
+    setMessage(""); // 전송 후 입력창 초기화
   };
+
+  useEffect(() => {
+    if (chatMessageData?.data.data && chatMessageData?.data.data.length > 0) {
+
+      const newMessages = [...messages, ...chatMessageData.data.data];
+      setMessages(
+        newMessages
+      );
+    }
+  }, [setMessages, chatRoomData])
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+  }, [chatMessageData?.data.data, messages]);
 
   return (
     <div className="relative h-screen">
@@ -89,9 +113,9 @@ export default function ChatPage() {
         </div>
       </div>
 
-      <div className="overflow-y-scroll h-screen pb-[206px]">
+      <div ref={chatContainerRef} className="overflow-y-scroll h-screen pb-[206px]">
         {/* chat */}
-        {chatMessageData?.data.data.map((message) => {
+        {messages.map((message) => {
           const isMe = message.userId === userInfoData?.data?.userId;
 
           return (
@@ -100,7 +124,7 @@ export default function ChatPage() {
               {isMe ? (
                 <div className="flex items-end justify-end gap-[8px]">
                   <div className="flex items-end flex-col">
-                    <p className="text-font-secondary text-[9px] font-medium">읽음 13</p>
+                    {/* <p className="text-font-secondary text-[9px] font-medium">읽음 13</p> */}
                     <p className="text-font-secondary text-[9px] font-medium">{formatKoreanTime(message.timeStamp)}</p>
                   </div>
                   <div className="flex flex-col items-start gap-[6px]">
@@ -130,7 +154,7 @@ export default function ChatPage() {
                       </div>
                     </div>
                     <div className="flex items-start flex-col">
-                      <p className="text-font-secondary text-[9px] font-medium">읽음 13</p>
+                      {/* <p className="text-font-secondary text-[9px] font-medium">읽음 13</p> */}
                       <p className="text-font-secondary text-[9px] font-medium">{formatKoreanTime(message.timeStamp)}</p>
                     </div>
                   </div>
@@ -148,6 +172,7 @@ export default function ChatPage() {
             rows={2}
             value={message}
             onChange={(e) => handleMessageChange(e.target.value)}
+            onKeyDown={(e) => keyboardDown(e)}
             className="w-full h-full resize-none bg-transparent text-font-primary body2 flex-wrap overflow-hidden font-medium focus:outline-none"
             placeholder="메시지를 입력해주세요"
           />
@@ -156,7 +181,6 @@ export default function ChatPage() {
           <img src={album} alt="album" className="w-[24px] h-[24px] cursor-pointer" />
           <button
             onClick={handleSend}
-            onKeyDown={(e) => keyboardDown(e)}
             disabled={!message.trim()}
             className={`body1 font-medium rounded-[4px] px-[10px] py-[4px] transition-colors duration-200 ${message.trim()
               ? 'bg-primary text-semantic-primary'

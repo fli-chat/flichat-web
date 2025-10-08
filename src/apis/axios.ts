@@ -87,7 +87,7 @@ const makeErrorInterceptor =
             resolve: (token: string) => {
               try {
                 withAuthHeader(originalConfig, token);
-                resolve(axios(originalConfig)); // 원본 config로 재요청
+                resolve(client(originalConfig)); // 원본 config로 재요청
               } catch (e) {
                 reject(e);
               }

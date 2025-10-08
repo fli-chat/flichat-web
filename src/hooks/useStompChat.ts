@@ -100,5 +100,5 @@ export default function useStompChat(roomId: number, userId: string) {
     }
   };
 
-  return { connected, messages, sendMessage };
+  return { connected, messages,setMessages, sendMessage };
 }
