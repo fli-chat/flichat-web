@@ -52,9 +52,11 @@ const processQueue = (error: any, token: string | null = null) => {
 
 // 공통 401 처리기: 어떤 axios 인스턴스에서 호출됐는지에 따라 재시도 시 인스턴스를 주입
 const makeResponseInterceptor =
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (client: typeof api) =>
-  async (response: any) => response;
+  async (response: any) => {
+    console.log('client', client);
+    return response;
+  };
 
 /**
  * 공통 에러 처리(401 → refresh → 재시도)
