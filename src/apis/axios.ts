@@ -1,101 +1,152 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from "axios";
+import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { getCookie, setCookie } from "../utils/cookie";
 import useAuth, { AuthStatus } from "../store/useAuth";
 import { AuthApi } from "./auth.api";
 
+type RetriableConfig = InternalAxiosRequestConfig & { _retry?: boolean };
+
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
+  headers: { "Content-Type": "application/json" },
+});
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+export const chatApi = axios.create({
+  baseURL: import.meta.env.VITE_CHAT_API_URL,
+  headers: { "Content-Type": "application/json" },
+});
+
+const withAuthHeader = (config: InternalAxiosRequestConfig, token: string) => {
+  config.headers = config.headers ?? {};
+  (config.headers as any).Authorization = `Bearer ${token}`;
   return config;
-}, (error) => {
-  return Promise.reject(error);
-})
+};
 
-let isRefreshing = false; // 토큰 갱신 상태
-let failedQueue: any = []; // 실패한 요청을 저장하는 큐
+// ===== Request interceptors =====
+const attachAccessToken = (config: InternalAxiosRequestConfig) => {
+  const token = localStorage.getItem("accessToken");
+  if (token) withAuthHeader(config, token);
+  return config;
+};
 
-const processQueue = (error: any, token: any = null) => {
-  failedQueue.forEach((prom: any) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token);
-    }
+api.interceptors.request.use(attachAccessToken, Promise.reject);
+chatApi.interceptors.request.use(attachAccessToken, Promise.reject);
+
+// ===== Refresh queue state =====
+let isRefreshing = false;
+let failedQueue: Array<{ resolve: (t: string) => void; reject: (e: any) => void }> = [];
+
+const processQueue = (error: any, token: string | null = null) => {
+  failedQueue.forEach(({ resolve, reject }) => {
+    if (error || !token) reject(error || new Error("No refreshed token"));
+    else resolve(token);
   });
-
   failedQueue = [];
 };
 
-api.interceptors.response.use(
-  response => response,
-  async error => {
-    const { config, response } = error;
-    const status = response.status;
+const redirectToLogin = async () => {
+  if (window.location.pathname !== "/") {
+    window.location.replace("/chat/login");
+  }
+  await useAuth.getState().setAuthStatus(AuthStatus.unauthorized);
+};
 
-    if (
-      config.url.includes('/refresh') && 
-      status === 401
-    ) {
-      // root 페이지로 이동
-      if (window.location.pathname !== '/') {
-        window.location.replace('/chat/login');
-      }
-      await useAuth.getState().setAuthStatus(AuthStatus.unauthorized);
+// 공통 401 처리기: 어떤 axios 인스턴스에서 호출됐는지에 따라 재시도 시 인스턴스를 주입
+const makeResponseInterceptor =
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  (client: typeof api) =>
+  async (response: any) => response;
 
+/**
+ * 공통 에러 처리(401 → refresh → 재시도)
+ * - 현재 인스턴스(client)로 재시도
+ */
+const makeErrorInterceptor =
+  (client: typeof api) =>
+  async (error: AxiosError) => {
+    const originalConfig = (error.config || {}) as RetriableConfig;
+
+    // 응답 자체가 없으면(네트워크 등) 그대로 던짐
+    if (!error.response) {
       return Promise.reject(error);
     }
 
-    if (status === 401 && !config._retry) {
+    const status = error.response.status;
+
+    // refresh 호출이 401이면 즉시 로그아웃/리다이렉트
+    // if (originalConfig.url?.includes("/refresh") && status === 401) {
+    //   await redirectToLogin();
+    //   return Promise.reject(error);
+    // }
+
+    // 401 처리
+    if (status === 401 && !originalConfig._retry) {
       if (isRefreshing) {
+        // 새 토큰이 나올 때까지 대기
         return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
-        })
-          .then(token => {
-            config.headers.Authorization = `Bearer ${token}`;
-            return axios(config);
-          })
-          .catch(err => Promise.reject(err));
+          failedQueue.push({
+            resolve: (token: string) => {
+              try {
+                withAuthHeader(originalConfig, token);
+                resolve(axios(originalConfig)); // 원본 config로 재요청
+              } catch (e) {
+                reject(e);
+              }
+            },
+            reject,
+          });
+        });
       }
 
-      config._retry = true;
+      originalConfig._retry = true;
       isRefreshing = true;
 
       try {
-        const storedRefreshToken = getCookie('refreshToken');
-        const storedAccessToken = localStorage.getItem('accessToken');
-        
-        if (!storedAccessToken || !storedRefreshToken) {
-          throw new Error('토큰이 없습니다.');
-        }
-          const { accessToken, refreshToken } =  await AuthApi.refreshToken(storedAccessToken, storedRefreshToken);
-          if (
-            accessToken &&
-            refreshToken
-          ) {
-            localStorage.setItem('accessToken', accessToken);
-            setCookie('refreshToken', refreshToken, { path: '/' });
-            processQueue(null, accessToken);
-          }
+        const storedAccessToken = localStorage.getItem("accessToken");
+        const storedRefreshToken = getCookie("refreshToken");
 
-        return await api(config);
-      } catch (err) {
-        processQueue(err, null);
-        return await Promise.reject(err);
+        if (!storedAccessToken || !storedRefreshToken) {
+          throw new Error("토큰이 없습니다.");
+        }
+
+        const { accessToken, refreshToken } = await AuthApi.refreshToken(
+          storedAccessToken,
+          storedRefreshToken
+        );
+
+        if (!accessToken || !refreshToken) {
+          throw new Error("토큰 갱신 실패");
+        }
+
+        // 새 토큰 저장
+        localStorage.setItem("accessToken", accessToken);
+        setCookie("refreshToken", refreshToken, {
+          path: "/",
+          // 운영 환경에서는 보안 옵션 권장
+          secure: true,
+          sameSite: "Lax",
+        });
+
+        // 대기 중이던 요청들 처리
+        processQueue(null, accessToken);
+
+        // 현재 실패했던 이 요청에도 새 토큰 주입해서 재시도
+        withAuthHeader(originalConfig, accessToken);
+        return client(originalConfig);
+      } catch (refreshErr) {
+        // 대기열 전부 실패 처리
+        processQueue(refreshErr, null);
+        await redirectToLogin();
+        return Promise.reject(refreshErr);
       } finally {
         isRefreshing = false;
       }
     }
 
+    // 기타 에러는 그대로
     return Promise.reject(error);
-  }
-);
+  };
+
+// ===== Response interceptors 등록 =====
+api.interceptors.response.use(makeResponseInterceptor(api), makeErrorInterceptor(api));
+chatApi.interceptors.response.use(makeResponseInterceptor(chatApi), makeErrorInterceptor(chatApi));
