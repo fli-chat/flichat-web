@@ -5,7 +5,7 @@ export interface ChatMessage {
   roomId: string;
   sender: string;
   timeStamp: string;
-  userId: number;
+  userId: string;
 }
 
 export interface ChatRoom {

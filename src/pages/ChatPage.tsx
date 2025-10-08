@@ -9,18 +9,20 @@ import { ChatApi } from "../apis/chat.api";
 import { formatKoreanTime } from "../utils/format";
 import LoginModal from "../components/LoginModal";
 import { UserApi } from "../apis/user.api";
+import useStompChat from "../hooks/useStompChat";
 
-const roomId = 3;
-const userId = 229520437022183424;
+const roomId = 108;
 
 export default function ChatPage() {
   const { setIsOpen } = useSidebar();
+
+
 
   const [message, setMessage] = useState("");
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  const { data: chatMessageData } = useQuery({
+  const { data: chatMessageData, refetch: refetchChatMessage } = useQuery({
     queryKey: ['chatMessage', roomId],
     queryFn: () => ChatApi.getChatHistory(roomId),
     retry: false,
@@ -38,6 +40,9 @@ export default function ChatPage() {
     retry: false,
   })
 
+  const { messages, sendMessage } = useStompChat(roomId, userInfoData?.data?.userId ?? '');
+
+
   const onClickInput = () => {
     if (!userInfoData?.data) {
       setIsLoginModalOpen(true);
@@ -45,8 +50,8 @@ export default function ChatPage() {
     }
   }
 
-  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
+  const handleMessageChange = (text: string) => {
+    setMessage(text);
   };
 
   const onClickProfile = () => {
@@ -54,10 +59,19 @@ export default function ChatPage() {
   };
 
 
-  const handleSend = () => {
+  const keyboardDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === "Enter") {
+      handleSend();
+    }
+  }
+
+  const handleSend = async () => {
     if (message.trim()) {
       // 메시지 전송 로직
       console.log("메시지 전송:", message);
+      sendMessage(message);
+
+      await refetchChatMessage();
       setMessage(""); // 전송 후 입력창 초기화
     }
   };
@@ -78,7 +92,7 @@ export default function ChatPage() {
       <div className="overflow-y-scroll h-screen pb-[206px]">
         {/* chat */}
         {chatMessageData?.data.data.map((message) => {
-          const isMe = message.userId === userId;
+          const isMe = message.userId === userInfoData?.data?.userId;
 
           return (
             <div className="flex flex-col gap-[0px] mx-[20px] mt-[12px]">
@@ -133,7 +147,7 @@ export default function ChatPage() {
           <textarea
             rows={2}
             value={message}
-            onChange={handleMessageChange}
+            onChange={(e) => handleMessageChange(e.target.value)}
             className="w-full h-full resize-none bg-transparent text-font-primary body2 flex-wrap overflow-hidden font-medium focus:outline-none"
             placeholder="메시지를 입력해주세요"
           />
@@ -142,6 +156,7 @@ export default function ChatPage() {
           <img src={album} alt="album" className="w-[24px] h-[24px] cursor-pointer" />
           <button
             onClick={handleSend}
+            onKeyDown={(e) => keyboardDown(e)}
             disabled={!message.trim()}
             className={`body1 font-medium rounded-[4px] px-[10px] py-[4px] transition-colors duration-200 ${message.trim()
               ? 'bg-primary text-semantic-primary'
