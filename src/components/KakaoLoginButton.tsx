@@ -31,12 +31,16 @@ export default function KakaoLoginButton() {
     const refreshToken = response.data.refreshToken;
 
     if (response.code === 200) {
+      if (response.data.isNewAccount) {
+        alert('새로운 계정입니다. 앱에서 플리챗 회원가입을 진행해주세요.');
+        return;
+      }
       localStorage.setItem('accessToken', accessToken);
       setCookie('refreshToken', refreshToken, { path: '/' });
       useAuthStore.getState().setAuthStatus(AuthStatus.authorized);
 
       navigate('/chat');
-      window.location.reload();
+      // window.location.reload();
     }
   }
 
