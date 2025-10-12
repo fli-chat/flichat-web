@@ -99,7 +99,7 @@ export default function UserSidebar() {
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.04}
             onDragEnd={(_, info) => { if (info.offset.x > 80) setIsOpen(false); }}
-            className={`absolute top-0 right-0 h-full w-[750px] bg-[#1A1A1A] z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'
+            className={`absolute top-0 right-0 h-full w-[750px] bg-[#1A1A1A] z-50 transform transition-transform duration-300 ease-in-out md:w-full ${isOpen ? 'translate-x-0' : 'translate-x-full'
               }`}>
             {/* 헤더 */}
             <div className="flex justify-between items-center p-[20px]">

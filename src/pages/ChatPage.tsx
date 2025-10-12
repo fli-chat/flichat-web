@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import user from "../assets/icons/profile.svg";
 import profile from "../assets/icons/purple.svg";
-import album from "../assets/icons/album.svg";
 import ProfileModal from "../components/ProfileModal";
 import LoginModal from "../components/LoginModal";
 import AppInstallModal from "../components/AppInstallModal";
@@ -193,7 +192,8 @@ export default function ChatPage() {
           />
         </div>
         <div className="flex items-center justify-between">
-          <img src={album} alt="album" className="w-[24px] h-[24px] cursor-pointer" />
+          {/* <img src={album} alt="album" className="w-[24px] h-[24px] cursor-pointer" /> */}
+          <div />
           <button
             onClick={handleSend}
             disabled={!message.trim()}

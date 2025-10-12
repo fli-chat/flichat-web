@@ -24,7 +24,6 @@ interface ProfileModalProps {
 export default function ProfileModal({ reportPayload, setIsProfileModalOpen }: ProfileModalProps) {
   const [selectedReason, setSelectedReason] = useState<string>("불법촬영물");
 
-
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isReportSelectModalOpen, setIsReportSelectModalOpen] = useState(false);
   const [isReportSuccessModalOpen, setIsReportSuccessModalOpen] = useState(false);
@@ -82,7 +81,7 @@ export default function ProfileModal({ reportPayload, setIsProfileModalOpen }: P
   return (
     <>
       {!isReportModalOpen && (
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[373px] bg-semantic-teriary rounded-[10px]">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[373px] bg-semantic-teriary rounded-[10px] md:w-[320px]">
           <div className="px-[20px] py-[24px] pb-[32px]">
             <div className="w-full flex justify-end">
               <img
@@ -131,7 +130,6 @@ export default function ProfileModal({ reportPayload, setIsProfileModalOpen }: P
         <ReportSelectModal
           onClickReportSuccess={onClickReportSuccess}
           onClose={() => setIsReportSelectModalOpen(false)}
-          reportPayload={reportPayload}
         />
       )}
 
