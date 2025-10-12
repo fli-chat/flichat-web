@@ -1,11 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from 'react';
 import { Client, type StompSubscription } from '@stomp/stompjs';
 import { UserApi } from '../apis/user.api';
 import { useQuery } from '@tanstack/react-query';
+import { v4 as uuidv4 } from 'uuid';
+import type { ChatMessage } from '../type/chat.type';
 
 export default function useStompChat(roomId: number, userId: string) {
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [connected, setConnected] = useState(false);
   const clientRef = useRef<Client | null>(null);
   const subRef = useRef<StompSubscription | null>(null);
@@ -85,6 +86,7 @@ export default function useStompChat(roomId: number, userId: string) {
       sender: userInfoData?.data?.nickName,
       profileColorType: userInfoData?.data?.profileColorType,
       roomId: roomId?.toString() ?? '',
+      clientMessageId: uuidv4()
     };
 
     console.log('📤 메시지 전송 시도:', messagePayload);

@@ -11,6 +11,7 @@ import { ChatApi } from "../apis/chat.api";
 import { formatKoreanTime } from "../utils/format";
 import { UserApi } from "../apis/user.api";
 import useStompChat from "../hooks/useStompChat";
+import type { ChatMessage } from "../type/chat.type";
 
 const roomId = 3;
 
@@ -25,6 +26,7 @@ export default function ChatPage() {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isAppInstallModalOpen, setIsAppInstallModalOpen] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState<ChatMessage | null>(null);
 
   const { data: chatMessageData, refetch: refetchChatMessage } = useQuery({
     queryKey: ['chatMessage', roomId],
@@ -58,7 +60,8 @@ export default function ChatPage() {
     setMessage(text);
   };
 
-  const onClickProfile = () => {
+  const onClickProfile = (clickedMessage: ChatMessage) => {
+    setSelectedMessage(clickedMessage);
     setIsProfileModalOpen(true);
   };
 
@@ -152,7 +155,7 @@ export default function ChatPage() {
                 <div className="flex items-start gap-[8px]">
                   <div
                     className="w-[28px] h-[28px] cursor-pointer hover:opacity-80 transition-opacity duration-200"
-                    onClick={onClickProfile}
+                    onClick={() => onClickProfile(message)}
                   >
                     <img src={profile} alt="user" className="w-[28px] h-full" />
                   </div>
@@ -205,7 +208,16 @@ export default function ChatPage() {
       </div>
 
       {isProfileModalOpen && (
-        <ProfileModal setIsProfileModalOpen={setIsProfileModalOpen} />
+        <ProfileModal
+          setIsProfileModalOpen={setIsProfileModalOpen}
+          reportPayload={{
+            chatRoomName: chatRoomData?.data.title ?? '',
+            reporterId: userInfoData?.data?.userId ?? '',
+            reporterdUserId: selectedMessage?.userId ?? '',
+            reportedMessageId: selectedMessage?.id ?? '',
+            reportedMessageContent: selectedMessage?.message ?? '',
+            message: selectedMessage?.message ?? ''
+          }} />
       )}
 
       {isLoginModalOpen && (

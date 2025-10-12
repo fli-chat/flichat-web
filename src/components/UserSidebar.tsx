@@ -131,16 +131,6 @@ export default function UserSidebar() {
             {/* 구분선 */}
             <div className="mt-[70px] h-[1px] bg-semantic-secondary mx-[20px]"></div>
 
-            {/* 알림 설정 */}
-            <div className="px-[40px] mt-[24px]">
-              <div className="flex justify-between items-center">
-                <span className="text-white font-medium">주요 푸시알림</span>
-                <button className="relative inline-flex h-[24px] w-[44px] items-center rounded-full bg-semantic-secondary transition-colors duration-200">
-                  <span className="sr-only">알림 설정</span>
-                  <span className="inline-block h-[20px] w-[20px] transform rounded-full bg-system-mint2 transition-transform duration-200 translate-x-[22px]"></span>
-                </button>
-              </div>
-            </div>
 
 
             {/* 로그아웃 버튼 */}

@@ -24,7 +24,7 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = () => {
 
     console.log(credentialResponse);
     const response = await api.post('/api/v1/oauth/login', {
-      oauthProvider: 'GOOGLE',
+      oauthProvider: 'GOOGLE_WEB',
       identifier: '',
       token: idToken,
 

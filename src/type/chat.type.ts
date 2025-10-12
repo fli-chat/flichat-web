@@ -6,6 +6,7 @@ export interface ChatMessage {
   sender: string;
   timeStamp: string;
   userId: string;
+  clientMessageId: string;
 }
 
 export interface ChatRoom {
