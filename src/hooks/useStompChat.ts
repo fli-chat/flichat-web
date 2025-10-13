@@ -22,7 +22,7 @@ export default function useStompChat(roomId: number, userId: string) {
 
     const client = new Client({
       brokerURL: 'wss://chat.flichat.co.kr/ws-chat',
-      reconnectDelay: 5000,
+      reconnectDelay: 50000,
       heartbeatIncoming: 10000,
       heartbeatOutgoing: 10000,
       debug: (msg) => console.log('[STOMP DEBUG]', msg),

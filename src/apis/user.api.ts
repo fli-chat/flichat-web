@@ -43,4 +43,12 @@ export class UserApi {
     });
     return response.data;
   }
+
+  static async postBlock(blockedUserId: string, chatRoomId: number) {
+    const response = await chatApi.post('/api/v1/block', {
+      blockedUserId,
+      chatRoomId,
+    });
+    return response.data;
+  }
 }

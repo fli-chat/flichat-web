@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import close from "../assets/icons/close.svg";
 import profile from "../assets/icons/purple.svg";
@@ -8,6 +9,9 @@ import ReportSelectModal from "./ReportSelectModal";
 import ReportSuccessModal from "./ReportSuccessModal";
 import { useMutation } from "@tanstack/react-query";
 import { UserApi, type ReportPayload } from "../apis/user.api";
+import BlockSelectModal from "./BlockSelectModal";
+import BlockSuccessModal from "./BlockSuccessModa";
+import toast from "react-hot-toast";
 
 interface ProfileModalProps {
   reportPayload: {
@@ -17,6 +21,7 @@ interface ProfileModalProps {
     reportedMessageId: string;
     reportedMessageContent: string;
     message: string;
+    chatRoomId: number;
   }
   setIsProfileModalOpen: (isProfileModalOpen: boolean) => void;
 }
@@ -27,9 +32,19 @@ export default function ProfileModal({ reportPayload, setIsProfileModalOpen }: P
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isReportSelectModalOpen, setIsReportSelectModalOpen] = useState(false);
   const [isReportSuccessModalOpen, setIsReportSuccessModalOpen] = useState(false);
+  const [isBlockSelectModalOpen, setIsBlockSelectModalOpen] = useState(false);
+  const [isBlockSuccessModalOpen, setIsBlockSuccessModalOpen] = useState(false);
 
   const { mutateAsync: reportMutation } = useMutation({
     mutationFn: (reportPayload: ReportPayload) => UserApi.postReport(reportPayload),
+  });
+
+  const { mutateAsync: blockMutation } = useMutation({
+    mutationFn: ({ blockedUserId, chatRoomId }: { blockedUserId: string, chatRoomId: number }) => UserApi.postBlock(blockedUserId, chatRoomId),
+    onError: (error: any) => {
+      console.log(error.response.data.msg);
+      toast.error(error.response.data.msg);
+    },
   });
 
   const convertReportType = (reason: string) => {
@@ -55,9 +70,19 @@ export default function ProfileModal({ reportPayload, setIsProfileModalOpen }: P
     setIsReportModalOpen(true);
   }
 
+  const onClickBlock = () => {
+    setIsBlockSelectModalOpen(true);
+  }
+
   const handleReport = () => {
     setIsReportModalOpen(false);
     setIsReportSelectModalOpen(true);
+  }
+
+  const onClickBlockSuccess = async () => {
+    await blockMutation({ blockedUserId: reportPayload.reporterdUserId, chatRoomId: reportPayload.chatRoomId });
+    setIsBlockSelectModalOpen(false);
+    setIsBlockSuccessModalOpen(true);
   }
 
   const onClickReportSuccess = async () => {
@@ -76,7 +101,6 @@ export default function ProfileModal({ reportPayload, setIsProfileModalOpen }: P
     setIsReportSelectModalOpen(false);
     setIsReportSuccessModalOpen(true);
   }
-
 
   return (
     <>
@@ -99,7 +123,7 @@ export default function ProfileModal({ reportPayload, setIsProfileModalOpen }: P
           </div>
 
           <div className="w-full h-[1px] bg-semantic-fourth" />
-          <div className="pt-[16px] flex flex-col pb-[24px]">
+          <div className="pt-[16px] flex flex-col pb-[24px]" onClick={onClickBlock}>
             <div className="flex items-center gap-[8px] px-[20px] py-[16px] cursor-pointer hover:bg-semantic-fourth transition-colors duration-200">
               <img src={block} alt="block" />
               <p className="body1 font-medium text-font-primary">사용자 차단하기</p>
@@ -137,6 +161,21 @@ export default function ProfileModal({ reportPayload, setIsProfileModalOpen }: P
       {isReportSuccessModalOpen && (
         <ReportSuccessModal
           onClose={() => setIsReportSuccessModalOpen(false)}
+        />
+      )}
+
+      {/* 차단 선택 모달 */}
+      {isBlockSelectModalOpen && (
+        <BlockSelectModal
+          onClickBlockSuccess={onClickBlockSuccess}
+          onClose={() => setIsBlockSelectModalOpen(false)}
+        />
+      )}
+
+      {/* 차단 성공 모달 */}
+      {isBlockSuccessModalOpen && (
+        <BlockSuccessModal
+          onClose={() => setIsBlockSuccessModalOpen(false)}
         />
       )}
     </>

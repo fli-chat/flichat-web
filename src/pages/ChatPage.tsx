@@ -216,7 +216,8 @@ export default function ChatPage() {
             reporterdUserId: selectedMessage?.userId ?? '',
             reportedMessageId: selectedMessage?.id ?? '',
             reportedMessageContent: selectedMessage?.message ?? '',
-            message: selectedMessage?.message ?? ''
+            message: selectedMessage?.message ?? '',
+            chatRoomId: roomId,
           }} />
       )}
 
