@@ -9,7 +9,11 @@ const inter = Inter({ subsets: ['latin'] });
 // eslint-disable-next-line react-refresh/only-export-components
 export const metadata: Metadata = {
   title: 'Flichat',
-  description: '실시간 채팅 서비스',
+  description: '최신 영화와 콘텐츠를 주제로 다양한 사람들과 실시간으로 소통하고 토론할 수 있는 오픈채팅 플랫폼입니다.',
+  keywords: '영화, 채팅, 실시간, 토론, 콘텐츠, 오픈채팅, Flichat',
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
