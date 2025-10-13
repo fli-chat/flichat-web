@@ -1,5 +1,5 @@
 export interface ChatMessage {
-  id: string;
+  id: string | null;
   message: string;
   profileColorType: 'BLUE' | 'PURPLE' | 'RED' | 'GREEN' | 'YELLOW' | null;
   roomId: string;

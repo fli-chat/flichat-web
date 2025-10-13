@@ -1,69 +1,73 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { Client, type StompSubscription } from '@stomp/stompjs';
-import { UserApi } from '../apis/user.api';
 import { useQuery } from '@tanstack/react-query';
 import { v4 as uuidv4 } from 'uuid';
+import { UserApi } from '../apis/user.api';
 import type { ChatMessage } from '../type/chat.type';
 
+type AnyMsg = ChatMessage & {
+  clientMessageId?: string;
+  optimistic?: boolean;
+};
+
 export default function useStompChat(roomId: number, userId: string) {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [connected, setConnected] = useState(false);
+  const [messages, setMessages] = useState<AnyMsg[]>([]);
   const clientRef = useRef<Client | null>(null);
   const subRef = useRef<StompSubscription | null>(null);
+
+  // 간단한 중복 체크: clientMessageId → id
+  const hasMsg = (m: Partial<AnyMsg>) =>
+    messages.some(
+      (x) =>
+        (m.clientMessageId && x.clientMessageId === m.clientMessageId) ||
+        (m.id && x.id === m.id)
+    );
+
+  const replaceOptimistic = (incoming: AnyMsg) => {
+    setMessages((prev) => {
+      const idx = incoming.clientMessageId
+        ? prev.findIndex((p) => p.clientMessageId === incoming.clientMessageId)
+        : -1;
+      if (idx >= 0) {
+        const next = [...prev];
+        next[idx] = { ...next[idx], ...incoming, optimistic: false };
+        return next;
+      }
+      // 없으면 신규 추가(중복만 피함)
+      if (hasMsg(incoming)) return prev;
+      return [...prev, { ...incoming, optimistic: false }];
+    });
+  };
 
   const { data: userInfoData } = useQuery({
     queryKey: ['userInfo'],
     queryFn: () => UserApi.getUser(),
     retry: false,
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
-    console.log('🔌 STOMP 초기화 시작...', { roomId });
-
     const client = new Client({
       brokerURL: 'wss://chat.flichat.co.kr/ws-chat',
-      reconnectDelay: 50000,
+      reconnectDelay: 5000,
       heartbeatIncoming: 10000,
       heartbeatOutgoing: 10000,
-      debug: (msg) => console.log('[STOMP DEBUG]', msg),
     });
 
-    client.onConnect = (frame) => {
-      console.log('✅ STOMP 연결 성공:', frame.headers);
-      setConnected(true);
-
-      console.log(`📡 /topic/chat/room/${roomId} 구독 시작`);
+    client.onConnect = () => {
       subRef.current = client.subscribe(`/topic/chat/room/${roomId}`, (msg) => {
-        console.log('📨 메시지 수신:', msg.body);
-        try {
-          const payload = JSON.parse(msg.body);
-          setMessages((prev) => [...prev, payload]);
-        } catch (e) {
-          console.error('❌ 메시지 파싱 실패:', e);
-        }
+        const payload = JSON.parse(msg.body) as AnyMsg;
+        replaceOptimistic(payload);
       });
-    };
-
-    client.onStompError = (frame) => {
-      console.error('🚨 STOMP 프로토콜 오류:', frame.headers['message'], frame.body);
-    };
-
-    client.onWebSocketClose = (evt) => {
-      console.warn('⚠️ WebSocket 연결 종료:', evt);
-      setConnected(false);
-    };
-
-    client.onWebSocketError = (evt) => {
-      console.error('❌ WebSocket 에러 발생:', evt);
     };
 
     client.activate();
     clientRef.current = client;
 
     return () => {
-      console.log('🧹 STOMP 연결 해제 및 구독 해제 중...');
       subRef.current?.unsubscribe();
-      subRef.current = null;
       client.deactivate();
       clientRef.current = null;
     };
@@ -71,36 +75,51 @@ export default function useStompChat(roomId: number, userId: string) {
 
   const sendMessage = (content: string) => {
     const client = clientRef.current;
-    if (!client) {
-      console.warn('⚠️ STOMP 클라이언트가 초기화되지 않음');
-      return;
-    }
-    if (!client.connected) {
-      console.warn('⚠️ STOMP 클라이언트가 아직 연결되지 않음');
-      return;
-    }
+    if (!client?.connected) return;
 
-    const messagePayload = {
-      userId: userId,
+    const clientMessageId = uuidv4();
+    const optimistic: AnyMsg = {
+      clientMessageId,
+      optimistic: true,
+      id: null,
+      userId,
+      sender: userInfoData?.data?.nickName ?? '',
+      profileColorType: userInfoData?.data?.profileColorType ?? null,
+      roomId: String(roomId),
       message: content,
-      sender: userInfoData?.data?.nickName,
-      profileColorType: userInfoData?.data?.profileColorType,
-      roomId: roomId?.toString() ?? '',
-      clientMessageId: uuidv4()
+      timeStamp: new Date().toISOString(),
     };
 
-    console.log('📤 메시지 전송 시도:', messagePayload);
+    // 낙관적 추가
+    setMessages((prev) => [...prev, optimistic]);
 
-    try {
-      client.publish({
-        destination: '/send/chat/message',
-        body: JSON.stringify(messagePayload),
-      });
-      console.log('✅ 메시지 전송 완료');
-    } catch (e) {
-      console.error('❌ 메시지 전송 실패:', e);
-    }
+    // 서버 전송(서버가 같은 clientMessageId를 되돌려주면 위 replaceOptimistic이 교체)
+    client.publish({
+      destination: '/send/chat/message',
+      body: JSON.stringify({
+        roomId: String(roomId),
+        userId,
+        message: content,
+        sender: optimistic.sender,
+        profileColorType: optimistic.profileColorType,
+        clientMessageId,
+      }),
+    });
   };
 
-  return { connected, messages,setMessages, sendMessage };
+  // useCallback으로 감싸서 함수 참조 안정화
+  const mergeInitial = useCallback((list: AnyMsg[]) => {
+    setMessages((prev) => {
+      if (!list?.length) return prev;
+      const next = [...prev];
+      list.forEach((m) => {
+        if (!messages.some(x => (m.clientMessageId && x.clientMessageId === m.clientMessageId) || (m.id && x.id === m.id))) {
+          next.push({ ...m, optimistic: false });
+        }
+      });
+      return next;
+    });
+  }, []); // 빈 의존성 배열
+
+  return { messages, sendMessage, mergeInitial };
 }
