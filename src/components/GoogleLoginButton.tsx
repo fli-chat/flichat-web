@@ -1,8 +1,9 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import google from "../assets/icons/logo/google.svg";
 import { GoogleLogin, GoogleOAuthProvider, type CredentialResponse } from '@react-oauth/google';
 import { api } from '../apis/axios';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+
 
 declare global {
   interface Window {
@@ -16,7 +17,7 @@ interface GoogleLoginButtonProps {
 }
 
 const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleSuccess = async (credentialResponse: CredentialResponse) => {
     // 구글에서 발급한 JWT(id_token)
@@ -29,10 +30,9 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = () => {
       token: idToken,
 
     });
-
     if (response.status === 200) {
-      navigate('/chat');
-      window.location.reload();
+      router.push('/chat');
+      // window.location.reload();
     }
   }
 
@@ -40,12 +40,12 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = () => {
   return (
     <GoogleOAuthProvider clientId="430508454350-rkt5ue8tjk5qkroddliv2nb0d1po51gr.apps.googleusercontent.com">
       <div className='relative w-full cursor-pointer'>
-        <button className="relative w-full h-[48px] bg-transparent border border-font-point font-semibold rounded-[4px] flex items-center justify-center transition-all duration-200 cursor-pointer">
-          <img src={google} alt="google" className="w-6 h-6 absolute left-4" />
+        <div className="relative w-full h-[48px] bg-transparent border border-font-point font-semibold rounded-[4px] flex items-center justify-center transition-all duration-200 cursor-pointer">
+          <Image src="/icons/logo/google.svg" alt="google" className="w-6 h-6 absolute left-4" width={24} height={24} />
           <p className="body1 text-font-point   font-medium">
             Google로 시작하기
           </p>
-        </button>
+        </div>
 
         <div className="absolute inset-0 opacity-0 pointer-events-auto border border-red-700">
           <GoogleLogin

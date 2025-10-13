@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import close from "../assets/icons/close.svg";
-import profile from "../assets/icons/purple.svg";
-import block from "../assets/icons/block.svg";
-import report from "../assets/icons/report.svg";
+import Image from 'next/image';
 import ReportModal from "./ReportModal";
 import ReportSelectModal from "./ReportSelectModal";
 import ReportSuccessModal from "./ReportSuccessModal";
@@ -108,16 +105,18 @@ export default function ProfileModal({ reportPayload, setIsProfileModalOpen }: P
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[373px] bg-semantic-teriary rounded-[10px] md:w-[320px]">
           <div className="px-[20px] py-[24px] pb-[32px]">
             <div className="w-full flex justify-end">
-              <img
-                src={close}
+              <Image
+                src="/icons/close.svg"
                 alt="close"
                 className="cursor-pointer hover:opacity-70 transition-opacity duration-200"
                 onClick={() => setIsProfileModalOpen(false)}
+                width={24}
+                height={24}
               />
             </div>
 
             <div className="w-full flex flex-col items-center gap-[16px] justify-center pt-[16px]">
-              <img src={profile} alt="profile" className="w-[80px] h-[80px]" />
+              <Image src="/icons/profile.svg" alt="profile" className="w-[80px] h-[80px]" width={80} height={80} />
               <p className="title4 font-bold text-font-primary">Jay Park</p>
             </div>
           </div>
@@ -125,14 +124,14 @@ export default function ProfileModal({ reportPayload, setIsProfileModalOpen }: P
           <div className="w-full h-[1px] bg-semantic-fourth" />
           <div className="pt-[16px] flex flex-col pb-[24px]" onClick={onClickBlock}>
             <div className="flex items-center gap-[8px] px-[20px] py-[16px] cursor-pointer hover:bg-semantic-fourth transition-colors duration-200">
-              <img src={block} alt="block" />
+              <Image src="/icons/block.svg" alt="block" width={24} height={24} />
               <p className="body1 font-medium text-font-primary">사용자 차단하기</p>
             </div>
             <div
               className="flex items-center gap-[8px] px-[20px] py-[16px] cursor-pointer hover:bg-semantic-fourth transition-colors duration-200"
               onClick={onClickReport}
             >
-              <img src={report} alt="report" />
+              <Image src="/icons/report.svg" alt="report" width={24} height={24} />
               <p className="body1 font-medium text-font-primary">사용자 신고하기</p>
             </div>
           </div>

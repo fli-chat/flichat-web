@@ -1,4 +1,5 @@
-import close from "../assets/icons/close.svg";
+import Image from 'next/image';
+
 
 interface ReportModalProps {
   selectedReason: string;
@@ -42,11 +43,13 @@ export default function ReportModal({ selectedReason, onClose, handleReport, set
           {/* 헤더 */}
           <div className="flex justify-between items-center p-[20px] ">
             <h3 className="title4 font-bold text-font-primary">신고 사유</h3>
-            <img
-              src={close}
+            <Image
+              src="/icons/close.svg"
               alt="close"
               className="cursor-pointer w-[24px] h-[24px] hover:opacity-70 transition-opacity duration-200"
               onClick={onClose}
+              width={24}
+              height={24}
             />
           </div>
 

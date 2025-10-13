@@ -1,0 +1,5 @@
+{
+  "/qna/page": "app/qna/page.js",
+  "/chat/login/page": "app/chat/login/page.js",
+  "/chat/page": "app/chat/page.js"
+}

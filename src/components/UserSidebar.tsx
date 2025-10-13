@@ -1,20 +1,17 @@
-import { useEffect } from "react";
-import edit from "../assets/icons/edit.svg";
+'use client';
 
-import purple from "../assets/icons/profile_dafault_purple.svg";
-import red from "../assets/icons/profile_dafault_coral.svg";
-import blue from "../assets/icons/profile_dafault_skyblue.svg";
-import green from "../assets/icons/profile_dafault_mint.svg";
-import yellow from "../assets/icons/profile_dafault_yellow.svg";
+
+import { useEffect } from "react";
+import Image from "next/image";
 
 import { useSidebar } from "../store/useSidebar";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AuthApi } from "../apis/auth.api";
-import { useNavigate } from "react-router-dom";
 import { deleteCookie } from "../utils/cookie";
 import useAuthStore, { AuthStatus } from "../store/useAuth";
 import { ProfileColorType, UserApi } from "../apis/user.api";
+import { useRouter } from "next/navigation";
 
 
 
@@ -24,7 +21,7 @@ export default function UserSidebar() {
   const { isOpen, setIsOpen } = useSidebar();
   const { setAuthStatus } = useAuthStore();
 
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const { data: userInfoData } = useQuery({
     queryKey: ['userInfo'],
@@ -43,7 +40,7 @@ export default function UserSidebar() {
       setAuthStatus(AuthStatus.unauthorized);
       queryClient.clear();
 
-      navigate('/chat/login');
+      router.push('/chat/login');
     },
   });
 
@@ -54,15 +51,15 @@ export default function UserSidebar() {
   const convertProfileColorType = (profileColorType: ProfileColorType) => {
     switch (profileColorType) {
       case ProfileColorType.PURPLE:
-        return purple;
+        return "/icons/profile_dafault_purple.svg";
       case ProfileColorType.RED:
-        return red;
+        return "/icons/profile_dafault_coral.svg";
       case ProfileColorType.GREEN:
-        return green;
+        return "/icons/profile_dafault_mint.svg";
       case ProfileColorType.BLUE:
-        return blue;
+        return "/icons/profile_dafault_skyblue.svg";
       case ProfileColorType.YELLOW:
-        return yellow;
+        return "/icons/profile_dafault_yellow.svg";
     }
   }
   // ESC 키로 사이드바 닫기
@@ -112,7 +109,7 @@ export default function UserSidebar() {
                 </svg>
               </button>
               <button className="flex items-center gap-[8px] text-white bg-semantic-secondary rounded-[4px] px-[16px] py-[8px]">
-                <img src={edit} alt="edit" />
+                <Image src="/icons/edit.svg" alt="edit" width={24} height={24} />
                 <span className="body1 font-medium">프로필 수정</span>
               </button>
             </div>
@@ -121,7 +118,7 @@ export default function UserSidebar() {
             <div className="flex flex-col items-center px-[20px] py-[32px]">
               {/* 프로필 이미지 */}
               <div className="mb-[20px]">
-                <img src={convertProfileColorType(userInfoData?.data.profileColorType as ProfileColorType | ProfileColorType.PURPLE)} alt="profile" className="w-[77px] h-[77px]" />
+                <Image src={convertProfileColorType(userInfoData?.data.profileColorType as ProfileColorType | ProfileColorType.PURPLE)} alt="profile" className="w-[77px] h-[77px]" width={77} height={77} />
               </div>
 
               {/* 사용자 이름 */}

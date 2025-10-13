@@ -1,25 +1,19 @@
 /** @type {import('tailwindcss').Config} */
-export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+module.exports = {
+  content: [
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}", // App Router
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}", // Pages (있다면)
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}", // Components
+  ],
   theme: {
     screens: {
       "2xl": { max: "1535px" },
-      // => @media (max-width: 1535px) { ... }
-
       xl: { max: "1279px" },
-      // => @media (max-width: 1279px) { ... }
-
       lg: { max: "1023px" },
-      // => @media (max-width: 1023px) { ... }
-
       md: { max: "767px" },
-      // => @media (max-width: 767px) { ... }
-
       sm: { max: "639px" },
-      // => @media (max-width: 639px) { ... }
       sx: { min: "767px" },
     },
-
     extend: {
       colors: {
         primary: "#35D287",

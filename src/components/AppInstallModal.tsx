@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import close from "../assets/icons/close.svg";
-
+import Image from 'next/image';
 interface AppInstallModalProps {
   setIsAppInstallModalOpen: (isOpen: boolean) => void;
 }
@@ -41,7 +40,7 @@ export default function AppInstallModal({ setIsAppInstallModalOpen }: AppInstall
     >
       <div className="bg-semantic-teriary w-full max-w-[750px] rounded-t-[10px] p-[20px] animate-slide-up">
         <div className="flex justify-end">
-          <img src={close} alt="close" className="cursor-pointer" onClick={() => setIsAppInstallModalOpen(false)} />
+          <Image src="/icons/close.svg" alt="close" className="cursor-pointer" onClick={() => setIsAppInstallModalOpen(false)} width={24} height={24} />
         </div>
 
         <div className="flex flex-col justify-between h-[148px] mt-[20px]">

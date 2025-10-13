@@ -1,4 +1,4 @@
-import close from "../assets/icons/close.svg";
+import Image from 'next/image';
 import GoogleLoginButton from "./GoogleLoginButton";
 import KakaoLoginButton from "./KakaoLoginButton";
 
@@ -12,7 +12,7 @@ export default function LoginModal({ setIsLoginModalOpen }: LoginModalProps) {
     <div className="fixed inset-0  flex items-center justify-center">
       <div className="bg-semantic-teriary rounded-[10px] shadow-xl max-w-[440px] w-full p-[20px]  overflow-y-auto">
         <div className="flex justify-end">
-          <img src={close} alt="close" className="cursor-pointer" onClick={() => setIsLoginModalOpen(false)} />
+          <Image src="/icons/close.svg" alt="close" className="cursor-pointer" onClick={() => setIsLoginModalOpen(false)} width={24} height={24} />
         </div>
 
         <div className="pt-[80px] text-center flex flex-col gap-[4px]">

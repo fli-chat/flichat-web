@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import KakaoLogin from "react-kakao-login";
-import { useNavigate } from "react-router-dom";
-import kakao from "../assets/icons/logo/kakao.svg";
 import { AuthApi } from "../apis/auth.api";
 import { setCookie } from "../utils/cookie";
 import useAuthStore, { AuthStatus } from "../store/useAuth";
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 // interface KakaoResponse {
 //   profile: {
@@ -21,7 +21,7 @@ import useAuthStore, { AuthStatus } from "../store/useAuth";
 //   }
 // }
 export default function KakaoLoginButton() {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleSuccess = async (kakaoData: any) => {
     const { id_token, access_token } = kakaoData.response;
@@ -39,8 +39,8 @@ export default function KakaoLoginButton() {
       setCookie('refreshToken', refreshToken, { path: '/' });
       useAuthStore.getState().setAuthStatus(AuthStatus.authorized);
 
-      navigate('/chat');
-      window.location.reload();
+      router.push('/chat');
+      // window.location.reload();
     }
   }
 
@@ -59,12 +59,12 @@ export default function KakaoLoginButton() {
           width: '100%',
         }}
       >
-        <button className="relative w-full h-[48px] bg-[#FFE539] text-semantic-primary font-semibold rounded-[4px] flex items-center justify-center transition-all duration-200">
-          <img src={kakao} alt="Kakao" className="w-6 h-6 absolute left-4" />
+        <div className="relative w-full h-[48px] bg-[#FFE539] text-semantic-primary font-semibold rounded-[4px] flex items-center justify-center transition-all duration-200">
+          <Image src="/icons/logo/kakao.svg" alt="Kakao" className="w-6 h-6 absolute left-4" width={24} height={24} />
           <p className="body1 text-font-dark font-medium">
             카카오로 시작하기
           </p>
-        </button>
+        </div>
       </KakaoLogin>
     </>
   )

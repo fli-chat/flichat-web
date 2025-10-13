@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Client, type StompSubscription } from '@stomp/stompjs';
 import { useQuery } from '@tanstack/react-query';
