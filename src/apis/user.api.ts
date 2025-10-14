@@ -51,4 +51,12 @@ export class UserApi {
     });
     return response.data;
   }
+
+  static async patchUserProfile(profileColorType: ProfileColorType, nickName: string) {
+    const response = await api.patch('/api/v1/user/detail', {
+      profileColorType,
+      nickName,
+    });
+    return response.data;
+  }
 }

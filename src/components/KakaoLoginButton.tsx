@@ -5,6 +5,8 @@ import { setCookie } from "../utils/cookie";
 import useAuthStore, { AuthStatus } from "../store/useAuth";
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { ChatApi } from "@/apis/chat.api";
+import { useMutation } from "@tanstack/react-query";
 
 // interface KakaoResponse {
 //   profile: {
@@ -20,8 +22,12 @@ import Image from 'next/image';
 //     token_type: string;
 //   }
 // }
-export default function KakaoLoginButton() {
+export default function KakaoLoginButton({ roomId }: { roomId?: string }) {
   const router = useRouter();
+
+  const { mutateAsync: postChatEntryMutation } = useMutation({
+    mutationFn: (chatRoomId: string) => ChatApi.postChatEntry(chatRoomId),
+  });
 
   const handleSuccess = async (kakaoData: any) => {
     const { id_token, access_token } = kakaoData.response;
@@ -32,7 +38,7 @@ export default function KakaoLoginButton() {
 
     if (response.code === 200) {
       if (response.data.isNewAccount) {
-        alert('새로운 계정입니다. 앱에서 플리챗 회원가입을 진행해주세요.');
+        router.push('/chat/register');
         return;
       }
       localStorage.setItem('accessToken', accessToken);
@@ -40,7 +46,13 @@ export default function KakaoLoginButton() {
       useAuthStore.getState().setAuthStatus(AuthStatus.authorized);
 
       router.push('/chat');
+
+      if (roomId) {
+        postChatEntryMutation(roomId);
+      }
+
       window.location.reload();
+
     }
   }
 

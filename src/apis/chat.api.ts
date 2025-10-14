@@ -16,4 +16,9 @@ export class ChatApi {
     const response = await chatApi.get<ApiResponse<ChatRoom>>(`/api/v1/chat/rooms/${roomId}/movie-info`);
     return response.data;
   }
+
+  static async postChatEntry(chatRoomId: string) {
+    const response = await chatApi.post(`/api/v1/chat/${chatRoomId}/join`);
+    return response.data;
+  }
 } 

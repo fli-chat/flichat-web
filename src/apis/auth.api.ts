@@ -1,7 +1,7 @@
 import { api } from "./axios";
 
 export class AuthApi {
-  static async postLogin(oauthProvider: "KAKAO" | "GOOGLE", identifier: string, token: string) {
+  static async postLogin(oauthProvider: "KAKAO" | "GOOGLE" | "GOOGLE_WEB", identifier: string, token: string) {
     const response = await api.post('/api/v1/oauth/login', {
       oauthProvider,
       identifier,

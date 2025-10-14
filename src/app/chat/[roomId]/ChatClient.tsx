@@ -78,6 +78,14 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
     setMessage("");
   };
 
+  const onClickUserIcon = () => {
+    if (!userInfoData?.data) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+    setIsOpen(true);
+  }
+
   const keyboardDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       // 한글 조합 중일 때는 무시
@@ -111,7 +119,7 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
           <p className="text-font-point title4 font-bold">{movieTitle}</p>
           <p className="text-font-secondary title4 font-medium">{chatRoomData?.data?.joinedUserCount || 13}명</p>
         </div>
-        <div className="cursor-pointer" onClick={() => setIsOpen(true)}>
+        <div className="cursor-pointer" onClick={onClickUserIcon}>
           <Image src="/icons/profile.svg" alt="close" width={28} height={28} />
         </div>
       </div>
@@ -202,7 +210,7 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
         />
       )}
 
-      {isLoginModalOpen && <LoginModal setIsLoginModalOpen={setIsLoginModalOpen} />}
+      {isLoginModalOpen && <LoginModal setIsLoginModalOpen={setIsLoginModalOpen} roomId={String(roomId)} />}
       {isAppInstallModalOpen && <AppInstallModal setIsAppInstallModalOpen={setIsAppInstallModalOpen} />}
     </div>
   );

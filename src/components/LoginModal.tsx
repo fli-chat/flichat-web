@@ -4,10 +4,11 @@ import KakaoLoginButton from "./KakaoLoginButton";
 
 
 interface LoginModalProps {
+  roomId?: string;
   setIsLoginModalOpen: (isLoginModalOpen: boolean) => void;
 }
 
-export default function LoginModal({ setIsLoginModalOpen }: LoginModalProps) {
+export default function LoginModal({ setIsLoginModalOpen, roomId }: LoginModalProps) {
   return (
     <div className="fixed inset-0  flex items-center justify-center">
       <div className="bg-semantic-teriary rounded-[10px] shadow-xl max-w-[440px] w-full p-[20px]  overflow-y-auto">
@@ -21,8 +22,8 @@ export default function LoginModal({ setIsLoginModalOpen }: LoginModalProps) {
         </div>
 
         <div className="flex flex-col gap-[12px]  w-[400px] pt-[80px]">
-          <KakaoLoginButton />
-          <GoogleLoginButton />
+          <KakaoLoginButton roomId={roomId} />
+          <GoogleLoginButton roomId={roomId} />
         </div>
       </div>
     </div>

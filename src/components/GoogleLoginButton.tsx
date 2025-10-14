@@ -1,8 +1,12 @@
 import React from 'react';
 import { GoogleLogin, GoogleOAuthProvider, type CredentialResponse } from '@react-oauth/google';
-import { api } from '../apis/axios';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { AuthApi } from '@/apis/auth.api';
+import { setCookie } from '@/utils/cookie';
+import useAuthStore, { AuthStatus } from '@/store/useAuth';
+import { useMutation } from '@tanstack/react-query';
+import { ChatApi } from '@/apis/chat.api';
 
 
 declare global {
@@ -12,26 +16,45 @@ declare global {
   }
 }
 
-interface GoogleLoginButtonProps {
-  className?: string;
-}
-
-const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = () => {
+const GoogleLoginButton = ({ roomId }: { roomId?: string }) => {
   const router = useRouter();
 
+  const { mutateAsync: postChatEntryMutation } = useMutation({
+    mutationFn: (chatRoomId: string) => ChatApi.postChatEntry(chatRoomId),
+  })
+
   const handleSuccess = async (credentialResponse: CredentialResponse) => {
+    console.log('credentialResponse', credentialResponse);
     // 구글에서 발급한 JWT(id_token)
     const idToken = credentialResponse.credential;
 
-    console.log(credentialResponse);
-    const response = await api.post('/api/v1/oauth/login', {
-      oauthProvider: 'GOOGLE_WEB',
-      identifier: '',
-      token: idToken,
+    if (!idToken) {
+      console.log('idToken is null');
+      return;
+    }
 
-    });
-    if (response.status === 200) {
+    const response = await AuthApi.postLogin('GOOGLE_WEB', '', idToken);
+
+    const accessToken = response.data.accessToken;
+    const refreshToken = response.data.refreshToken;
+
+
+    if (response.code === 200) {
+      if (response.data.isNewAccount) {
+        router.push('/chat/register');
+        return;
+      }
+
+      localStorage.setItem('accessToken', accessToken);
+      setCookie('refreshToken', refreshToken, { path: '/' });
+      useAuthStore.getState().setAuthStatus(AuthStatus.authorized);
+
       router.push('/chat');
+
+      if (roomId) {
+        postChatEntryMutation(roomId);
+      }
+
       window.location.reload();
     }
   }

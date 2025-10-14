@@ -11,7 +11,6 @@ import { AuthApi } from "../apis/auth.api";
 import { deleteCookie } from "../utils/cookie";
 import useAuthStore, { AuthStatus } from "../store/useAuth";
 import { ProfileColorType, UserApi } from "../apis/user.api";
-import { useRouter } from "next/navigation";
 
 
 
@@ -20,8 +19,6 @@ export default function UserSidebar() {
 
   const { isOpen, setIsOpen } = useSidebar();
   const { setAuthStatus } = useAuthStore();
-
-  const router = useRouter();
 
   const { data: userInfoData } = useQuery({
     queryKey: ['userInfo'],
@@ -40,7 +37,7 @@ export default function UserSidebar() {
       setAuthStatus(AuthStatus.unauthorized);
       queryClient.clear();
 
-      router.push('/chat/login');
+      window.location.reload();
     },
   });
 
@@ -108,10 +105,10 @@ export default function UserSidebar() {
                   <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
-              <button className="flex items-center gap-[8px] text-white bg-semantic-secondary rounded-[4px] px-[16px] py-[8px]">
+              {/* <button className="flex items-center gap-[8px] text-white bg-semantic-secondary rounded-[4px] px-[16px] py-[8px]">
                 <Image src="/icons/edit.svg" alt="edit" width={24} height={24} />
                 <span className="body1 font-medium">프로필 수정</span>
-              </button>
+              </button> */}
             </div>
 
             {/* 사용자 프로필 */}
@@ -131,7 +128,7 @@ export default function UserSidebar() {
 
 
             {/* 로그아웃 버튼 */}
-            <div className="absolute bottom-4 left-0 right-0 p-[20px]">
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
               <button className=" text-white underline text-center py-[12px] hover:text-gray-300 transition-colors duration-200" onClick={onClickLogout} >
                 로그아웃
               </button>
