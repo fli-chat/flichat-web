@@ -7,7 +7,6 @@ export default function ChatLayout({ children }: { children: React.ReactNode }) 
   const { isOpen } = useSidebar();
 
   return (
-
     <>
       <div className="relative h-screen max-w-[750px] bg-semantic-primary mx-auto overflow-hidden">
         {children}

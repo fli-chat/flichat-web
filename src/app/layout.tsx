@@ -23,6 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
+      <head>
+        <meta name="google-site-verification" content="_uCvUXZVi-dzExe44ojvjnUdfgFn98SyQSD8jEL5GCY" />
+      </head>
       <body className={inter.className}>
         <RQProvider>
 
