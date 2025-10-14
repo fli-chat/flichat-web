@@ -70,7 +70,7 @@ const GoogleLoginButton = ({ roomId }: { roomId?: string }) => {
           </p>
         </div>
 
-        <div className="absolute inset-0 opacity-0 pointer-events-auto border border-red-700">
+        <div className="absolute inset-0 opacity-0 pointer-cursor border border-red-700 z-20">
           <GoogleLogin
             onSuccess={handleSuccess}
             onError={() => { console.log('error'); }}

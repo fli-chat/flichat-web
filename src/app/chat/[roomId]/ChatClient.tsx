@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useQuery } from "@tanstack/react-query";
 import { useSidebar } from "@/store/useSidebar";
 import { ChatMessage } from "@/type/chat.type";
-import { UserApi } from "@/apis/user.api";
+import { ProfileColorType, UserApi } from "@/apis/user.api";
 import { ChatApi } from "@/apis/chat.api";
 import useStompChat from "@/hooks/useStompChat";
 import { formatKoreanTime } from "@/utils/format";
@@ -15,6 +15,21 @@ import LoginModal from "@/components/LoginModal";
 import AppInstallModal from "@/components/AppInstallModal";
 import { parseTitle } from "@/utils/parseTitle";
 import { MOCK_MESSAGES } from "@/app/chat/[roomId]/chatMock";
+
+const convertProfileColorType = (profileColorType: ProfileColorType) => {
+  switch (profileColorType) {
+    case ProfileColorType.PURPLE:
+      return "/icons/profile_dafault_purple.svg";
+    case ProfileColorType.RED:
+      return "/icons/profile_dafault_coral.svg";
+    case ProfileColorType.GREEN:
+      return "/icons/profile_dafault_mint.svg";
+    case ProfileColorType.BLUE:
+      return "/icons/profile_dafault_skyblue.svg";
+    case ProfileColorType.YELLOW:
+      return "/icons/profile_dafault_yellow.svg";
+  }
+}
 
 export default function ChatClient({ roomId, title }: { roomId: number, title: string }) {
   const { setIsOpen } = useSidebar();
@@ -151,7 +166,7 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
                     className="w-[28px] h-[28px] cursor-pointer hover:opacity-80 transition-opacity duration-200"
                     onClick={() => { setSelectedMessage(m as any); setIsProfileModalOpen(true); }}
                   >
-                    <Image src="/icons/purple.svg" alt="user" className="w-[28px] h-full" width={28} height={28} />
+                    <Image src={convertProfileColorType(m.profileColorType as ProfileColorType)} alt="user" className="w-[28px] h-full" width={28} height={28} />
                   </div>
                   <div className="flex items-end gap-[6px]">
                     <div className="flex flex-col gap-[6px]">
