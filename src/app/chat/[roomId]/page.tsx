@@ -1,35 +1,38 @@
-import { notFound } from 'next/navigation';
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ChatRoomClient from "@/app/chat/[roomId]/chatRoomClient";
 import { META_MAP } from "@/app/chat/[roomId]/metaMap";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export async function generateMetadata(
-  { params }: { params: Promise<{ roomId: number }> }
+  { params }: { params: { roomId: string } }
 ): Promise<Metadata> {
-  const { roomId } = await params;
+  const id = Number(params.roomId);
+  const meta = META_MAP[id];
 
-  return META_MAP[roomId] ?? {
-    title: "FliChat 채팅방",
-    description: "영화 팬 커뮤니티 실시간 채팅",
-  };
+  return (
+    meta ?? {
+      title: "FliChat 채팅방",
+      description: "영화 팬 커뮤니티 실시간 채팅",
+    }
+  );
 }
 
 export default async function Page({
-  params
+  params,
 }: {
-  params: Promise<{ roomId: number }>
+  params: { roomId: string };
 }) {
-  const { roomId } = await params;
+  const id = Number(params.roomId);
 
-  const meta = META_MAP[roomId];
+  if (Number.isNaN(id)) {
+    notFound();
+  }
 
-  // ✅ 유효하지 않은 방 ID면 404 표시
+  const meta = META_MAP[id];
   if (!meta) {
     notFound();
   }
 
-  return (
-    <ChatRoomClient roomId={roomId} title={meta.title as string} />
-  );
+  return <ChatRoomClient roomId={id} title={meta.title as string} />;
 }
