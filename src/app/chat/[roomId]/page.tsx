@@ -3,11 +3,16 @@ import type { Metadata } from "next";
 import { META_MAP } from "@/app/chat/[roomId]/metaMap";
 import ChatClient from "@/app/chat/[roomId]/ChatClient";
 
+type ChatPageParams = {
+  params: Promise<{ roomId: string }>;
+}
 // eslint-disable-next-line react-refresh/only-export-components
 export async function generateMetadata(
-  { params }: { params: { roomId: string } }
+  { params }: ChatPageParams
 ): Promise<Metadata> {
-  const id = Number(params.roomId);
+  const { roomId } = await params;
+
+  const id = Number(roomId);
   const meta = META_MAP[id];
 
   return (
@@ -17,13 +22,12 @@ export async function generateMetadata(
     }
   );
 }
-
 export default async function Page({
   params,
-}: {
-  params: { roomId: string };
-}) {
-  const id = Number(params.roomId);
+}: ChatPageParams) {
+  const { roomId } = await params;
+
+  const id = Number(roomId);
 
   if (Number.isNaN(id)) {
     notFound();
