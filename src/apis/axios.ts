@@ -6,12 +6,12 @@ import { AuthApi } from "./auth.api";
 type RetriableConfig = InternalAxiosRequestConfig & { _retry?: boolean };
 
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080',
   headers: { "Content-Type": "application/json" },
 });
 
 export const chatApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_CHAT_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_CHAT_API_URL || 'http://localhost:8080',
   headers: { "Content-Type": "application/json" },
 });
 
