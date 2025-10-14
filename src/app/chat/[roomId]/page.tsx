@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { META_MAP } from "@/app/chat/[roomId]/metaMap";
-import ChatRoomClient from "@/app/chat/[roomId]/ChatRoomClient";
+import ChatClient from "@/app/chat/[roomId]/ChatClient";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export async function generateMetadata(
@@ -34,5 +34,5 @@ export default async function Page({
     notFound();
   }
 
-  return <ChatRoomClient roomId={id} title={meta.title as string} />;
+  return <ChatClient roomId={id} title={meta.title as string} />;
 }

@@ -16,7 +16,7 @@ import AppInstallModal from "@/components/AppInstallModal";
 import { parseTitle } from "@/utils/parseTitle";
 import { MOCK_MESSAGES } from "@/app/chat/[roomId]/chatMock";
 
-export default function ChatRoomClient({ roomId, title }: { roomId: number, title: string }) {
+export default function ChatClient({ roomId, title }: { roomId: number, title: string }) {
   const { setIsOpen } = useSidebar();
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
