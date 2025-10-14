@@ -32,7 +32,7 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = () => {
     });
     if (response.status === 200) {
       router.push('/chat');
-      // window.location.reload();
+      window.location.reload();
     }
   }
 

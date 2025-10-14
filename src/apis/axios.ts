@@ -23,8 +23,11 @@ const withAuthHeader = (config: InternalAxiosRequestConfig, token: string) => {
 
 // ===== Request interceptors =====
 const attachAccessToken = (config: InternalAxiosRequestConfig) => {
-  const token = localStorage.getItem("accessToken");
-  if (token) withAuthHeader(config, token);
+  // ✅ 클라이언트에서만 실행
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem("accessToken");
+    if (token) withAuthHeader(config, token);
+  }
   return config;
 };
 
@@ -50,11 +53,10 @@ const processQueue = (error: any, token: string | null = null) => {
 //   await useAuth.getState().setAuthStatus(AuthStatus.unauthorized);
 // };
 
-// 공통 401 처리기: 어떤 axios 인스턴스에서 호출됐는지에 따라 재시도 시 인스턴스를 주입
 const makeResponseInterceptor =
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (client: typeof api) =>
   async (response: any) => {
-    console.log('client', client);
     return response;
   };
 
@@ -82,6 +84,11 @@ const makeErrorInterceptor =
 
     // 401 처리
     if (status === 401 && !originalConfig._retry) {
+      // ✅ 클라이언트에서만 refresh 로직 실행
+      if (typeof window === 'undefined') {
+        return Promise.reject(error);
+      }
+
       if (isRefreshing) {
         // 새 토큰이 나올 때까지 대기
         return new Promise((resolve, reject) => {

@@ -40,7 +40,7 @@ export default function KakaoLoginButton() {
       useAuthStore.getState().setAuthStatus(AuthStatus.authorized);
 
       router.push('/chat');
-      // window.location.reload();
+      window.location.reload();
     }
   }
 
