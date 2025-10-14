@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import ChatRoomClient from "@/app/chat/[roomId]/chatRoomClient";
 import { META_MAP } from "@/app/chat/[roomId]/metaMap";
+import ChatRoomClient from "@/app/chat/[roomId]/ChatRoomClient";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export async function generateMetadata(
