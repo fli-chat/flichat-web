@@ -1,4 +1,3 @@
-import axios from "axios";
 import type { ApiResponse } from "../type/apiBaseType";
 import { api, chatApi } from "./axios";
 
@@ -54,19 +53,13 @@ export class UserApi {
   }
 
   static async patchUserProfile(profileColorType: ProfileColorType, nickName: string) {
-    try{ 
-    const response = await api.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/user/detail`, 
+    const response = await api.patch(`/api/v1/user/detail`, 
       {
       profileColorType,
       nickName,
     },
-    {
-      withCredentials: true,
-    }
+  
   );
     return response.data;
-} catch(error: any) {
-  console.log(error);
-}
   }
 }

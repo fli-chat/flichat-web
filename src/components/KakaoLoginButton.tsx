@@ -37,13 +37,15 @@ export default function KakaoLoginButton({ roomId }: { roomId?: string }) {
     const refreshToken = response.data.refreshToken;
 
     if (response.code === 200) {
+      localStorage.setItem('accessToken', accessToken);
+      setCookie('refreshToken', refreshToken, { path: '/' });
+      useAuthStore.getState().setAuthStatus(AuthStatus.authorized);
+
       if (response.data.isNewAccount) {
         router.push('/chat/register');
         return;
       }
-      localStorage.setItem('accessToken', accessToken);
-      setCookie('refreshToken', refreshToken, { path: '/' });
-      useAuthStore.getState().setAuthStatus(AuthStatus.authorized);
+
 
       router.push('/chat');
 
