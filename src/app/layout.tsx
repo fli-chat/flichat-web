@@ -25,6 +25,7 @@ export default function RootLayout({
     <html lang="ko">
       <head>
         <meta name="google-site-verification" content="_uCvUXZVi-dzExe44ojvjnUdfgFn98SyQSD8jEL5GCY" />
+        <meta name="naver-site-verification" content="c4823fbc1c0582f9be53f316de9f7ac4c8a65fbf" />
       </head>
       <body className={inter.className}>
         <RQProvider>
