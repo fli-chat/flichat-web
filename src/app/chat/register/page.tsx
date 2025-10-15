@@ -18,8 +18,8 @@ export default function ChatRegister() {
     mutationFn: (payload: { profileColorType: ProfileColorType, nickName: string }) => UserApi.patchUserProfile(payload.profileColorType, payload.nickName),
     onSuccess: () => {
       toast.success("프로필 등록이 완료되었습니다.");
-      router.back();
-      window.location.reload();
+      // router.back();
+      // window.location.reload();
     },
   })
 

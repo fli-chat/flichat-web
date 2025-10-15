@@ -54,12 +54,19 @@ export class UserApi {
   }
 
   static async patchUserProfile(profileColorType: ProfileColorType, nickName: string) {
-    const response = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/user/detail`, 
+    try{ 
+    const response = await api.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/user/detail`, 
       {
       profileColorType,
       nickName,
+    },
+    {
+      withCredentials: true,
     }
   );
     return response.data;
+} catch(error: any) {
+  console.log(error);
+}
   }
 }

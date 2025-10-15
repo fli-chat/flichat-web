@@ -203,7 +203,7 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
           <button
             onClick={handleSend}
             disabled={!message.trim()}
-            className={`body1 font-medium rounded-[4px] px-[10px] py-[4px] transition-colors duration-200 ${message.trim() ? 'bg-primary text-semantic-primary' : 'bg-semantic-teriary text-font-disabled'}`}
+            className={`body2 h-[36px] font-medium rounded-[4px] px-[10px]  transition-colors duration-200 ${message.trim() ? 'bg-primary text-semantic-primary' : 'bg-semantic-teriary text-font-disabled'}`}
           >
             보내기
           </button>
