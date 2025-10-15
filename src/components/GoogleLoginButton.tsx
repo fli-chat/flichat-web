@@ -65,12 +65,12 @@ const GoogleLoginButton = ({ roomId }: { roomId?: string }) => {
       <div className='relative w-full cursor-pointer'>
         <div className="relative w-full h-[48px] bg-transparent border border-font-point font-semibold rounded-[4px] flex items-center justify-center transition-all duration-200 cursor-pointer">
           <Image src="/icons/logo/google.svg" alt="google" className="w-6 h-6 absolute left-4" width={24} height={24} />
-          <p className="body1 text-font-point   font-medium">
+          <p className="body1 text-font-point font-medium">
             Google로 시작하기
           </p>
         </div>
 
-        <div className="absolute inset-0 opacity-0 pointer-cursor border border-red-700 z-20">
+        <div className="absolute inset-0 opacity-0 cursor-pointer border border-red-700 z-20">
           <GoogleLogin
             onSuccess={handleSuccess}
             onError={() => { console.log('error'); }}
@@ -78,11 +78,11 @@ const GoogleLoginButton = ({ roomId }: { roomId?: string }) => {
             theme="outline"
             size="large"
             width="450"
+            auto_select={false}
             text="continue_with"
             shape="square"
             logo_alignment="left"
             locale="ko"
-            auto_select={false}
           />
         </div>
       </div>
