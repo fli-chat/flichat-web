@@ -1,7 +1,7 @@
 import React from 'react';
 import { GoogleLogin, GoogleOAuthProvider, type CredentialResponse } from '@react-oauth/google';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { AuthApi } from '@/apis/auth.api';
 import { setCookie } from '@/utils/cookie';
 import useAuthStore, { AuthStatus } from '@/store/useAuth';
@@ -63,14 +63,14 @@ const GoogleLoginButton = ({ roomId }: { roomId?: string }) => {
   return (
     <GoogleOAuthProvider clientId="430508454350-rkt5ue8tjk5qkroddliv2nb0d1po51gr.apps.googleusercontent.com">
       <div className='relative w-full cursor-pointer'>
-        <div className="relative w-full h-[48px] bg-transparent border border-font-point font-semibold rounded-[4px] flex items-center justify-center transition-all duration-200 cursor-pointer">
-          <Image src="/icons/logo/google.svg" alt="google" className="w-6 h-6 absolute left-4" width={24} height={24} />
+        <div className="relative w-full h-[48px] bg-transparent font-semibold rounded-[4px] flex items-center justify-center transition-all duration-200 cursor-pointer">
+          {/* <Image src="/icons/logo/google.svg" alt="google" className="w-6 h-6 absolute left-4" width={24} height={24} />
           <p className="body1 text-font-point font-medium">
             Google로 시작하기
-          </p>
+          </p> */}
         </div>
 
-        <div className="absolute inset-0 opacity-0 cursor-pointer border border-red-700 z-20">
+        <div className="absolute inset-0 opacity-100 cursor-pointer z-20">
           <GoogleLogin
             onSuccess={handleSuccess}
             onError={() => { console.log('error'); }}
