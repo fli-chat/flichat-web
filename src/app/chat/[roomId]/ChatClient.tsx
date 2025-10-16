@@ -59,9 +59,6 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
     queryKey: ['chatMessage:init', roomId],
     queryFn: () => ChatApi.getChatHistory(roomId),
     retry: false,
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
   });
 
   const { data: chatRoomData } = useQuery({

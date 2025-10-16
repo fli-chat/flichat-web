@@ -24,6 +24,7 @@ import { useMutation } from "@tanstack/react-query";
 // }
 export default function KakaoLoginButton({ roomId }: { roomId?: string }) {
   const router = useRouter();
+  const KAKAO_CLIENT_TOKEN = process.env.NEXT_PUBLIC_KAKAO_TOKEN;
 
   const { mutateAsync: postChatEntryMutation } = useMutation({
     mutationFn: (chatRoomId: string) => ChatApi.postChatEntry(chatRoomId),
@@ -32,7 +33,7 @@ export default function KakaoLoginButton({ roomId }: { roomId?: string }) {
   const handleSuccess = async (kakaoData: any) => {
     const { id_token, access_token } = kakaoData.response;
     const response = await AuthApi.postLogin('KAKAO', id_token, access_token);
-    console.log(response);
+
     const accessToken = response.data.accessToken;
     const refreshToken = response.data.refreshToken;
 
@@ -61,7 +62,7 @@ export default function KakaoLoginButton({ roomId }: { roomId?: string }) {
   return (
     <>
       <KakaoLogin
-        token="90dae4b1b418922811579bf331dd82cf"
+        token={`${KAKAO_CLIENT_TOKEN}`}
         onSuccess={handleSuccess}
         onFail={() => { console.log('error'); }}
         style={{

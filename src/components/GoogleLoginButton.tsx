@@ -18,13 +18,13 @@ declare global {
 
 const GoogleLoginButton = ({ roomId }: { roomId?: string }) => {
   const router = useRouter();
+  const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
   const { mutateAsync: postChatEntryMutation } = useMutation({
     mutationFn: (chatRoomId: string) => ChatApi.postChatEntry(chatRoomId),
   })
 
   const handleSuccess = async (credentialResponse: CredentialResponse) => {
-    console.log('credentialResponse', credentialResponse);
     // 구글에서 발급한 JWT(id_token)
     const idToken = credentialResponse.credential;
 
@@ -63,7 +63,7 @@ const GoogleLoginButton = ({ roomId }: { roomId?: string }) => {
 
 
   return (
-    <GoogleOAuthProvider clientId="430508454350-rkt5ue8tjk5qkroddliv2nb0d1po51gr.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={`${GOOGLE_CLIENT_ID}`}>
       <div className='relative w-full cursor-pointer'>
         <div className="relative w-full h-[48px] bg-transparent font-semibold rounded-[4px] flex items-center justify-center transition-all duration-200 cursor-pointer">
           {/* <Image src="/icons/logo/google.svg" alt="google" className="w-6 h-6 absolute left-4" width={24} height={24} />

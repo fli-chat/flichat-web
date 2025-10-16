@@ -5,6 +5,9 @@ interface AppInstallModalProps {
 }
 
 export default function AppInstallModal({ setIsAppInstallModalOpen }: AppInstallModalProps) {
+  const APP_STORE_URL = 'https://apps.apple.com/kr/app/%ED%94%8C%EB%A6%AC%EC%B1%97/id6746469918';
+  const GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=com.flichat.app'
+
   useEffect(() => {
     // ESC 키로 닫기
     const handleEsc = (e: KeyboardEvent) => {
@@ -27,9 +30,9 @@ export default function AppInstallModal({ setIsAppInstallModalOpen }: AppInstall
     // iOS 감지
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     if (isIOS) {
-      window.location.href = "https://apps.apple.com/your-app"; // 실제 앱스토어 링크
+      window.location.href = `${APP_STORE_URL}`;
     } else {
-      window.location.href = "https://play.google.com/store/apps/your-app"; // 실제 플레이스토어 링크
+      window.location.href = `${GOOGLE_PLAY_URL}`;
     }
   };
 
