@@ -64,7 +64,7 @@ const GoogleLoginButton = ({ roomId }: { roomId?: string }) => {
 
   return (
     <GoogleOAuthProvider clientId={`${GOOGLE_CLIENT_ID}`}>
-      <div className='relative w-full cursor-pointer'>
+      <div className='relative w-full cursor-pointer md:hidden'>
         <div className="relative w-full h-[48px] bg-transparent font-semibold rounded-[4px] flex items-center justify-center transition-all duration-200 cursor-pointer">
           {/* <Image src="/icons/logo/google.svg" alt="google" className="w-6 h-6 absolute left-4" width={24} height={24} />
           <p className="body1 text-font-point font-medium">
@@ -80,6 +80,31 @@ const GoogleLoginButton = ({ roomId }: { roomId?: string }) => {
             theme="outline"
             size="large"
             width="450"
+            auto_select={false}
+            text="continue_with"
+            shape="square"
+            logo_alignment="left"
+            locale="ko"
+          />
+        </div>
+      </div>
+
+      <div className='relative w-full cursor-pointer hidden md:block'>
+        <div className="relative w-full h-[48px] bg-transparent font-semibold rounded-[4px] flex items-center justify-center transition-all duration-200 cursor-pointer">
+          {/* <Image src="/icons/logo/google.svg" alt="google" className="w-6 h-6 absolute left-4" width={24} height={24} />
+          <p className="body1 text-font-point font-medium">
+            Google로 시작하기
+          </p> */}
+        </div>
+
+        <div className="absolute inset-0 opacity-100 cursor-pointer z-20">
+          <GoogleLogin
+            onSuccess={handleSuccess}
+            onError={() => { console.log('error'); }}
+            useOneTap={false}
+            theme="outline"
+            size="large"
+            width="300"
             auto_select={false}
             text="continue_with"
             shape="square"

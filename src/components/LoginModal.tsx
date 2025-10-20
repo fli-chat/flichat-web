@@ -11,7 +11,7 @@ interface LoginModalProps {
 export default function LoginModal({ setIsLoginModalOpen, roomId }: LoginModalProps) {
   return (
     <div className="fixed inset-0  flex items-center justify-center">
-      <div className="bg-semantic-teriary rounded-[10px] shadow-xl max-w-[440px] w-full p-[20px]  overflow-y-auto">
+      <div className="bg-semantic-teriary rounded-[10px] shadow-xl max-w-[440px] w-full p-[20px]  overflow-y-auto md:w-[340px]">
         <div className="flex justify-end">
           <Image src="/icons/close.svg" alt="close" className="cursor-pointer" onClick={() => setIsLoginModalOpen(false)} width={24} height={24} />
         </div>
@@ -21,7 +21,7 @@ export default function LoginModal({ setIsLoginModalOpen, roomId }: LoginModalPr
           <p className="font-bold text-[18px] text-font-primary">실시간으로 더 많은 대화를 해보세요!</p>
         </div>
 
-        <div className="flex flex-col gap-[12px]  w-[400px] pt-[80px]">
+        <div className="flex flex-col items-center mx-auto gap-[12px]  pt-[80px] md:w-[300px]">
           <KakaoLoginButton roomId={roomId} />
           <GoogleLoginButton roomId={roomId} />
         </div>

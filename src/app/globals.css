@@ -6,6 +6,15 @@
   html {
     font-family: "Inter", system-ui, sans-serif;
   }
+
+  /* 모바일에서 input/button 자동 확대 방지 */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  textarea {
+    @apply text-base;
+  }
 }
 
 @layer components {
