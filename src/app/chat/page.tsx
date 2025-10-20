@@ -100,7 +100,7 @@ export default function ChatPage() {
   }, [messages.length]);
 
   return (
-    <div className="relative h-screen">
+    <div className="relative h-dvh">
       {/* header */}
       <div className="flex justify-between items-center px-[20px] py-[18px]">
         <div className="flex items-center gap-[8px] ">
@@ -113,7 +113,7 @@ export default function ChatPage() {
       </div>
 
       {/* chat list */}
-      <div ref={chatContainerRef} className="overflow-y-scroll h-screen pb-[206px]">
+      <div ref={chatContainerRef} className="overflow-y-scroll h-dvh pb-[206px]">
         {messages.map((m: any) => {
           const isMe = m.userId === userInfoData?.data?.userId;
           const key = (m as any).clientMessageId ?? m.id ?? `${m.timeStamp}-${m.userId}`;

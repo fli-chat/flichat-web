@@ -8,7 +8,7 @@ export default function ChatLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <>
-      <div className="relative h-screen max-w-[750px] bg-semantic-primary mx-auto overflow-hidden">
+      <div className="relative h-dvh max-w-[750px] bg-semantic-primary mx-auto overflow-hidden">
         {children}
 
         {isOpen && (

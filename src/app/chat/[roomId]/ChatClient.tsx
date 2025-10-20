@@ -124,11 +124,11 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
   }, [messages.length]);
 
   return (
-    <div className="relative h-screen">
+    <div className="relative h-dvh">
       {/* header */}
       <div className="flex justify-between items-center px-[20px] py-[18px]">
         <div className="flex items-center gap-[8px] ">
-          <p className="text-font-point title4 font-bold">{movieTitle}</p>
+          <h1 className="text-font-point title4 font-bold">{movieTitle}</h1>
           <p className="text-font-secondary title4 font-medium">{chatRoomData?.data?.joinedUserCount || 13}명</p>
         </div>
         <div className="cursor-pointer" onClick={onClickUserIcon}>
@@ -137,7 +137,7 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
       </div>
 
       {/* chat list */}
-      <div ref={chatContainerRef} className="overflow-y-scroll h-screen pb-[206px]">
+      <div ref={chatContainerRef} className="overflow-y-scroll h-dvh pb-[206px]">
         {displayMessages.map((m: any) => {
           const isMe = m.userId === (userInfoData?.data?.userId || 'mock-user-1');
           const key = (m as any).clientMessageId ?? m.id ?? `${m.timeStamp}-${m.userId}`;

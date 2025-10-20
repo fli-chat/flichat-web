@@ -14,7 +14,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-semantic-primary">
+    <div className="flex flex-col items-center justify-center h-dvh bg-semantic-primary">
       <div className="text-center px-4">
         <h2 className="text-font-point title2 font-bold mb-4">
           채팅방을 불러올 수 없습니다

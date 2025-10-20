@@ -29,7 +29,9 @@ export default function AppInstallModal({ setIsAppInstallModalOpen }: AppInstall
     // 앱 설치 로직 (App Store / Google Play 이동)
     // iOS 감지
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    if (isIOS) {
+    const isMac = /Macintosh|MacIntel|MacPPC|Mac68K/.test(navigator.userAgent);
+
+    if (isIOS || isMac) {
       window.location.href = `${APP_STORE_URL}`;
     } else {
       window.location.href = `${GOOGLE_PLAY_URL}`;

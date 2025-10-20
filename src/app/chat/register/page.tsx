@@ -55,7 +55,7 @@ export default function ChatRegister() {
   }, []);
 
   return (
-    <div className="flex flex-col justify-between h-screen">
+    <div className="flex flex-col justify-between h-dvh">
       <div>
         <div className="p-[21px] px-[30px]">
           <h1 className="title4 font-bold text-font-point">프로필 등록</h1>

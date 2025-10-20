@@ -7,7 +7,7 @@ import Image from 'next/image';
 export default function ChatLogin() {
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-end">
+    <div className="min-h-dvh flex flex-col items-center justify-end">
       {/* 로고 및 텍스트 영역 */}
       <div className="flex flex-col items-center justify-center mb-[347px]">
         {/* 로고 */}
