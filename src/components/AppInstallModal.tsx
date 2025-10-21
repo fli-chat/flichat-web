@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import Image from 'next/image';
+import mixpanel from "mixpanel-browser";
 interface AppInstallModalProps {
   setIsAppInstallModalOpen: (isOpen: boolean) => void;
 }
@@ -33,8 +34,10 @@ export default function AppInstallModal({ setIsAppInstallModalOpen }: AppInstall
 
     if (isIOS || isMac) {
       window.location.href = `${APP_STORE_URL}`;
+      mixpanel.track('click_install', { platform: isIOS ? 'ios' : 'mac' });
     } else {
       window.location.href = `${GOOGLE_PLAY_URL}`;
+      mixpanel.track('click_install', { platform: 'android' });
     }
   };
 

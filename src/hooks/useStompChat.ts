@@ -109,7 +109,6 @@ export default function useStompChat(roomId: number, userId: string) {
     });
   };
 
-  // useCallback으로 감싸서 함수 참조 안정화
   const mergeInitial = useCallback((list: AnyMsg[]) => {
     setMessages((prev) => {
       if (!list?.length) return prev;

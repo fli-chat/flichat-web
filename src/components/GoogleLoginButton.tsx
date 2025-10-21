@@ -7,6 +7,8 @@ import { setCookie } from '@/utils/cookie';
 import useAuthStore, { AuthStatus } from '@/store/useAuth';
 import { useMutation } from '@tanstack/react-query';
 import { ChatApi } from '@/apis/chat.api';
+import { UserApi } from '@/apis/user.api';
+import mixpanel from 'mixpanel-browser';
 
 
 declare global {
@@ -49,9 +51,18 @@ const GoogleLoginButton = ({ roomId }: { roomId?: string }) => {
         return;
       }
 
+      const userInfoResponse = await UserApi.getUser();
 
+      if (userInfoResponse.code === 200) {
+        mixpanel.people.set({
+          $nickName: userInfoResponse.data.nickName,
+          $userId: userInfoResponse.data.userId,
+        });
+      }
 
       router.push('/chat');
+
+      mixpanel.track('login_google_web');
 
       if (roomId) {
         postChatEntryMutation(roomId);

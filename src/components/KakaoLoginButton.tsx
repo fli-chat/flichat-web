@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { ChatApi } from "@/apis/chat.api";
 import { useMutation } from "@tanstack/react-query";
+import mixpanel from "mixpanel-browser";
+import { UserApi } from "@/apis/user.api";
 
 // interface KakaoResponse {
 //   profile: {
@@ -47,8 +49,18 @@ export default function KakaoLoginButton({ roomId }: { roomId?: string }) {
         return;
       }
 
+      const userInfoResponse = await UserApi.getUser();
+
+      if (userInfoResponse.code === 200) {
+        mixpanel.people.set({
+          $nickName: userInfoResponse.data.nickName,
+          $userId: userInfoResponse.data.userId,
+        });
+      }
 
       router.push('/chat');
+
+      mixpanel.track('login_kakao_web');
 
       if (roomId) {
         postChatEntryMutation(roomId);

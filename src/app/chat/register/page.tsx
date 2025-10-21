@@ -2,6 +2,7 @@
 
 import { ProfileColorType, UserApi } from "@/apis/user.api";
 import { useMutation } from "@tanstack/react-query";
+import mixpanel from "mixpanel-browser";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -23,8 +24,19 @@ export default function ChatRegister() {
     },
   })
 
-  const onClickRegister = () => {
-    patchUserProfileMutation({ profileColorType: selectedProfileColor as ProfileColorType, nickName });
+  const onClickRegister = async () => {
+    mixpanel.track('click_signup_web');
+
+    await patchUserProfileMutation({ profileColorType: selectedProfileColor as ProfileColorType, nickName });
+
+    const userInfoResponse = await UserApi.getUser();
+
+    if (userInfoResponse.code === 200) {
+      mixpanel.people.set({
+        $nickName: userInfoResponse.data.nickName,
+        $userId: userInfoResponse.data.userId,
+      });
+    }
   }
 
   const convertProfileColorType = (profileColorType: ProfileColorType) => {
@@ -42,7 +54,6 @@ export default function ChatRegister() {
     }
   }
 
-
   useEffect(() => {
     const getRandomProfileColor = (): ProfileColorType => {
       const colors = Object.values(ProfileColorType);
@@ -53,6 +64,7 @@ export default function ChatRegister() {
     const profileColor = getRandomProfileColor();
     setSelectedProfileColor(profileColor);
   }, []);
+
 
   return (
     <div className="flex flex-col justify-between h-dvh">

@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import RQProvider from '@/libs/RQProvider';
 import { Toaster } from 'react-hot-toast';
+import MixpanelProvider from '@/libs/MixpanelProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   return (
     <html lang="ko">
       <head>
@@ -28,10 +30,13 @@ export default function RootLayout({
         <meta name="naver-site-verification" content="c4823fbc1c0582f9be53f316de9f7ac4c8a65fbf" />
       </head>
       <body className={inter.className}>
-        <RQProvider>
+        <MixpanelProvider>
 
-          {children}
-        </RQProvider>
+          <RQProvider>
+            {children}
+          </RQProvider>
+        </MixpanelProvider>
+
         <Toaster
           position="top-center"
           toastOptions={{

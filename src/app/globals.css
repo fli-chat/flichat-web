@@ -4,11 +4,13 @@
 
 @layer base {
   /* 모바일에서 input/button 자동 확대 방지 */
-  input,
-  textarea,
-  select,
-  button {
-    font-size: 16px !important;
+  @media (max-width: 767px) {
+    input,
+    textarea,
+    select,
+    button {
+      font-size: 16px !important;
+    }
   }
 }
 

@@ -15,6 +15,7 @@ import LoginModal from "@/components/LoginModal";
 import AppInstallModal from "@/components/AppInstallModal";
 import { parseTitle } from "@/utils/parseTitle";
 import { MOCK_MESSAGES } from "@/app/chat/[roomId]/chatMock";
+import mixpanel from "mixpanel-browser";
 
 const convertProfileColorType = (profileColorType: ProfileColorType) => {
   switch (profileColorType) {
@@ -86,7 +87,11 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
     sendMessage(message);
     const cnt = sentMessageCount + 1;
     setSentMessageCount(cnt);
-    if (cnt === 5) setIsAppInstallModalOpen(true);
+
+    if (cnt === 5) {
+      setIsAppInstallModalOpen(true);
+      mixpanel.track('view_inatll');
+    }
     setMessage("");
   };
 
