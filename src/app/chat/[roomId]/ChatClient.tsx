@@ -128,6 +128,20 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
     });
   }, [messages.length]);
 
+  // 첫 진입 시 스크롤 아래로 이동
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (chatContainerRef.current) {
+        chatContainerRef.current.scrollTo({
+          top: chatContainerRef.current.scrollHeight,
+          behavior: 'smooth',
+        });
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="relative h-dvh">
       {/* header */}
