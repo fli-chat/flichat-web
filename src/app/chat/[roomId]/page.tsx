@@ -15,12 +15,27 @@ export async function generateMetadata(
   const id = Number(roomId);
   const meta = META_MAP[id];
 
-  return (
-    meta ?? {
+  // canonical, twitter 추가
+  const canonical = `https://chatting.flichat.co.kr/chat/${id}`;
+
+  return meta ?? {
+    title: "FliChat 채팅방",
+    description: "영화 팬 커뮤니티 실시간 채팅",
+    alternates: { canonical },
+    openGraph: {
       title: "FliChat 채팅방",
       description: "영화 팬 커뮤니티 실시간 채팅",
-    }
-  );
+      url: canonical,
+      siteName: "Flichat 플리챗",
+      type: "website",
+      locale: "ko_KR",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "FliChat 채팅방",
+      description: "영화 팬 커뮤니티 실시간 채팅",
+    },
+  };
 }
 export default async function Page({
   params,
