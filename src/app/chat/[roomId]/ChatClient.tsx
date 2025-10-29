@@ -35,6 +35,7 @@ const convertProfileColorType = (profileColorType: ProfileColorType) => {
 export default function ChatClient({ roomId, title }: { roomId: number, title: string }) {
   const { setIsOpen } = useSidebar();
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [message, setMessage] = useState("");
   const [lastSendTime, setLastSendTime] = useState(0);
@@ -104,6 +105,11 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
       mixpanel.track('view_inatll');
     }
     setMessage("");
+
+    // 메시지 전송 후 textarea에 포커스 유지
+    setTimeout(() => {
+      textareaRef.current?.focus();
+    }, 0);
   };
 
   const onClickUserIcon = () => {
@@ -218,6 +224,7 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
         onClick={onClickInput}
         className="absolute bottom-0 left-0 right-0 w-full h-[64px] bg-semantic-secondary flex items-center justify-between p-[12px] ">
         <textarea
+          ref={textareaRef}
           rows={1}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
