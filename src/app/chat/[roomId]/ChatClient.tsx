@@ -15,7 +15,6 @@ import LoginModal from "@/components/LoginModal";
 import AppInstallModal from "@/components/AppInstallModal";
 import { parseTitle } from "@/utils/parseTitle";
 import { MOCK_MESSAGES } from "@/app/chat/[roomId]/chatMock";
-import mixpanel from "mixpanel-browser";
 
 const convertProfileColorType = (profileColorType: ProfileColorType) => {
   switch (profileColorType) {
@@ -102,11 +101,9 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
 
     if (cnt === 5) {
       setIsAppInstallModalOpen(true);
-      mixpanel.track('view_inatll');
     }
     setMessage("");
 
-    // 메시지 전송 후 textarea에 포커스 유지
     setTimeout(() => {
       textareaRef.current?.focus();
     }, 0);
@@ -173,7 +170,7 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
       </div>
 
       {/* chat list */}
-      <div ref={chatContainerRef} className="overflow-y-scroll h-dvh pb-[206px]">
+      <div ref={chatContainerRef} className="overflow-y-scroll h-dvh pb-[146px]">
         {displayMessages.map((m: any) => {
           const isMe = m.userId === (userInfoData?.data?.userId || 'mock-user-1');
           const key = (m as any).clientMessageId ?? m.id ?? `${m.timeStamp}-${m.userId}`;
@@ -234,7 +231,15 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
           className="w-full  resize-none bg-transparent text-font-primary body2 font-medium focus:outline-none px-[16px] py-[10px]"
           placeholder="메시지를 입력해주세요"
         />
-        <Image src={message.trim() ? "/icons/active-send.svg" : "/icons/disabled-send.svg"} alt="send" width={28} height={28} onClick={handleSend} className="cursor-pointer" />
+        <Image
+          src={message.trim() ? "/icons/active-send.svg" : "/icons/disabled-send.svg"}
+          alt="send"
+          width={28}
+          height={28}
+          onClick={handleSend}
+          onMouseDown={(e) => e.preventDefault()}
+          className="cursor-pointer"
+        />
       </div>
 
       {isProfileModalOpen && selectedMessage && (
