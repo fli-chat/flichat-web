@@ -216,29 +216,18 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
       {/* footer */}
       <div
         onClick={onClickInput}
-        className="absolute bottom-0 left-0 right-0 w-full h-[116px] bg-semantic-secondary flex flex-col justify-between p-[16px]">
-        <div >
-          <textarea
-            rows={2}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={keyboardDown}
-            onFocus={handleFocus}
-            readOnly={!userInfoData?.data}
-            className="w-full h-full resize-none bg-transparent text-font-primary body2 font-medium focus:outline-none"
-            placeholder="메시지를 입력해주세요"
-          />
-        </div>
-        <div className="flex items-center justify-between">
-          <div />
-          <button
-            onClick={handleSend}
-            disabled={!message.trim()}
-            className={`body2 h-[36px] font-medium rounded-[4px] w-[75px]  transition-colors duration-200 ${message.trim() ? 'bg-primary text-semantic-primary' : 'bg-semantic-teriary text-font-dark'}`}
-          >
-            보내기
-          </button>
-        </div>
+        className="absolute bottom-0 left-0 right-0 w-full h-[64px] bg-semantic-secondary flex items-center justify-between p-[12px] ">
+        <textarea
+          rows={1}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={keyboardDown}
+          onFocus={handleFocus}
+          readOnly={!userInfoData?.data}
+          className="w-full  resize-none bg-transparent text-font-primary body2 font-medium focus:outline-none px-[16px] py-[10px]"
+          placeholder="메시지를 입력해주세요"
+        />
+        <Image src={message.trim() ? "/icons/send.svg" : "/icons/disabled-send.svg"} alt="send" width={28} height={28} onClick={handleSend} className="cursor-pointer absolute right-[16px] " />
       </div>
 
       {isProfileModalOpen && selectedMessage && (
