@@ -1,6 +1,4 @@
-import type { Metadata } from "next";
-
-export const META_MAP: Record<number, Metadata> = {
+export const META_MAP= {
   8: {
     title: "<어쩔수가 없다> 후기 채팅방 - 결말 해석 · 현실 반응",
     description: `영화 〈어쩔수가 없다〉를 본 사람들의 솔직한 감상과 현실적인 대화가 오가는 오픈 채팅방.
@@ -27,8 +25,7 @@ openGraph: {
       type: 'website',
       url: 'https://chatting.flichat.co.kr/chat/112',
       locale: 'ko_KR',
-    }
-
+    },
   },
   117: {
     title: "<환승연애4> 후기 채팅방 - 솔직 후기 · 시청자 반응",
@@ -41,6 +38,6 @@ openGraph: {
       type: 'website',
       url: 'https://chatting.flichat.co.kr/chat/117',
       locale: 'ko_KR',
-    }
+    },
   },
 };
