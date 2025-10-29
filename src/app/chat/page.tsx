@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useSidebar } from "../../store/useSidebar";
 import type { ChatMessage } from "../../type/chat.type";
 import { useQuery } from "@tanstack/react-query";
-import { UserApi } from "../../apis/user.api";
+import { ProfileColorType, UserApi } from "../../apis/user.api";
 import { ChatApi } from "../../apis/chat.api";
 import useStompChat from "../../hooks/useStompChat";
 import { formatKoreanTime } from "../../utils/format";
@@ -186,6 +186,10 @@ export default function ChatPage() {
       {isProfileModalOpen && selectedMessage && (
         <ProfileModal
           setIsProfileModalOpen={setIsProfileModalOpen}
+          profile={{
+            nickName: selectedMessage?.sender ?? '',
+            profileColorType: selectedMessage?.profileColorType as ProfileColorType,
+          }}
           reportPayload={{
             chatRoomName: chatRoomData?.data?.title ?? '',
             reporterId: userInfoData?.data?.userId ?? '',
