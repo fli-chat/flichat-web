@@ -51,7 +51,7 @@ export default function AppInstallModal({ setIsAppInstallModalOpen }: AppInstall
           <Image src="/icons/close.svg" alt="close" className="cursor-pointer" onClick={() => setIsAppInstallModalOpen(false)} width={24} height={24} />
         </div>
 
-        <div className="flex flex-col justify-between h-[148px] mt-[20px]">
+        <div className="flex flex-col justify-between items-center h-[148px] mt-[20px]">
           <div className="flex flex-col gap-[10px] ">
             <p className="title4 font-bold text-font-primary">앱에서 더 편하게 실시간 채팅을 즐겨보세요!</p>
             <p className="font-medium text-font-secondary text-[16px]">OTT 인기 콘텐츠 채팅방에도 참여할 수 있습니다.</p>
