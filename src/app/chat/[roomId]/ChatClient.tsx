@@ -165,7 +165,7 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
           <p className="text-font-secondary title4 font-medium">{chatRoomData?.data?.joinedUserCount || 13}명</p>
         </div>
         <div className="cursor-pointer" onClick={onClickUserIcon}>
-          <Image src="/icons/profile-icon.svg" alt="close" width={22} height={22} />
+          <Image src="/icons/profile-icon.svg" alt="close" width={20} height={20} />
         </div>
       </div>
 
