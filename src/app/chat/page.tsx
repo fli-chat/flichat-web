@@ -64,13 +64,18 @@ export default function ChatPage() {
   // };
 
   const handleSend = () => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isMac = /Macintosh|MacIntel|MacPPC|Mac68K/.test(navigator.userAgent);
+
     const now = Date.now();
     if (!message.trim() || now - lastSendTime < 500) return;
     setLastSendTime(now);
     sendMessage(message);
     const cnt = sentMessageCount + 1;
     setSentMessageCount(cnt);
-    if (cnt === 5) setIsAppInstallModalOpen(true);
+    if (cnt === 5 && (isIOS || isMac)) {
+      setIsAppInstallModalOpen(true)
+    }
     setMessage("");
   };
 
