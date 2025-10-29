@@ -5,7 +5,7 @@ import ReportModal from "./ReportModal";
 import ReportSelectModal from "./ReportSelectModal";
 import ReportSuccessModal from "./ReportSuccessModal";
 import { useMutation } from "@tanstack/react-query";
-import { UserApi, type ReportPayload } from "../apis/user.api";
+import { ProfileColorType, UserApi, type ReportPayload } from "../apis/user.api";
 import BlockSelectModal from "./BlockSelectModal";
 import BlockSuccessModal from "./BlockSuccessModa";
 import toast from "react-hot-toast";
@@ -20,10 +20,30 @@ interface ProfileModalProps {
     message: string;
     chatRoomId: number;
   }
+  profile: {
+    nickName: string;
+    profileColorType: ProfileColorType;
+  }
   setIsProfileModalOpen: (isProfileModalOpen: boolean) => void;
 }
 
-export default function ProfileModal({ reportPayload, setIsProfileModalOpen }: ProfileModalProps) {
+const convertProfileColorType = (profileColorType: ProfileColorType) => {
+  switch (profileColorType) {
+    case ProfileColorType.PURPLE:
+      return "/icons/profile_dafault_purple.svg";
+    case ProfileColorType.RED:
+      return "/icons/profile_dafault_coral.svg";
+    case ProfileColorType.GREEN:
+      return "/icons/profile_dafault_mint.svg";
+    case ProfileColorType.BLUE:
+      return "/icons/profile_dafault_skyblue.svg";
+    case ProfileColorType.YELLOW:
+      return "/icons/profile_dafault_yellow.svg";
+  }
+}
+
+
+export default function ProfileModal({ reportPayload, profile, setIsProfileModalOpen }: ProfileModalProps) {
   const [selectedReason, setSelectedReason] = useState<string>("불법촬영물");
 
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
@@ -116,8 +136,8 @@ export default function ProfileModal({ reportPayload, setIsProfileModalOpen }: P
             </div>
 
             <div className="w-full flex flex-col items-center gap-[16px] justify-center pt-[16px]">
-              <Image src="/icons/profile.svg" alt="profile" className="w-[80px] h-[80px]" width={80} height={80} />
-              <p className="title4 font-bold text-font-primary">Jay Park</p>
+              <Image src={convertProfileColorType(profile.profileColorType)} alt="profile" className="w-[80px] h-[80px]" width={80} height={80} />
+              <p className="title4 font-bold text-font-primary">{profile.nickName}</p>
             </div>
           </div>
 

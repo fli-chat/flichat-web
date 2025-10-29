@@ -227,12 +227,16 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
           className="w-full  resize-none bg-transparent text-font-primary body2 font-medium focus:outline-none px-[16px] py-[10px]"
           placeholder="메시지를 입력해주세요"
         />
-        <Image src={message.trim() ? "/icons/send.svg" : "/icons/disabled-send.svg"} alt="send" width={28} height={28} onClick={handleSend} className="cursor-pointer absolute right-[16px] " />
+        <Image src={message.trim() ? "/icons/active-send.svg" : "/icons/disabled-send.svg"} alt="send" width={28} height={28} onClick={handleSend} className="cursor-pointer" />
       </div>
 
       {isProfileModalOpen && selectedMessage && (
         <ProfileModal
           setIsProfileModalOpen={setIsProfileModalOpen}
+          profile={{
+            nickName: selectedMessage?.sender ?? '',
+            profileColorType: selectedMessage?.profileColorType as ProfileColorType,
+          }}
           reportPayload={{
             chatRoomName: chatRoomData?.data?.title ?? '',
             reporterId: userInfoData?.data?.userId ?? '',
