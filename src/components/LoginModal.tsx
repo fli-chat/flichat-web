@@ -17,8 +17,8 @@ export default function LoginModal({ setIsLoginModalOpen, roomId }: LoginModalPr
         </div>
 
         <div className="pt-[80px] text-center flex flex-col gap-[4px]">
-          <p className="font-bold text-[18px] text-font-primary">플리챗에 로그인 후</p>
-          <p className="font-bold text-[18px] text-font-primary">실시간으로 더 많은 대화를 해보세요!</p>
+          <p className="font-semibold text-[18px] text-font-primary">플리챗에 로그인 후</p>
+          <p className="font-semibold text-[18px] text-font-primary">실시간으로 더 많은 대화를 해보세요!</p>
         </div>
 
         <div className="flex flex-col items-center mx-auto gap-[12px]  pt-[80px] md:w-[300px]">
