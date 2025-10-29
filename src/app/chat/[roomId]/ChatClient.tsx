@@ -78,6 +78,7 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
 
   const onClickInput = () => {
     if (!userInfoData?.data) setIsLoginModalOpen(true);
+    return;
   };
 
   const handleSend = () => {
@@ -203,8 +204,10 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
       </div>
 
       {/* footer */}
-      <div className="absolute bottom-0 left-0 right-0 w-full h-[116px] bg-semantic-secondary flex flex-col justify-between p-[16px]">
-        <div onClick={() => !userInfoData?.data && setIsLoginModalOpen(true)}>
+      <div
+        onClick={onClickInput}
+        className="absolute bottom-0 left-0 right-0 w-full h-[116px] bg-semantic-secondary flex flex-col justify-between p-[16px]">
+        <div >
           <textarea
             rows={2}
             value={message}
@@ -214,7 +217,7 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
             placeholder="메시지를 입력해주세요"
           />
         </div>
-        <div className="flex items-center justify-between" onClick={onClickInput}>
+        <div className="flex items-center justify-between">
           <div />
           <button
             onClick={handleSend}
