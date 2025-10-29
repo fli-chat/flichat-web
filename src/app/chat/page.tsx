@@ -108,7 +108,7 @@ export default function ChatPage() {
           <p className="text-font-secondary title4 font-medium">{chatRoomData?.data?.joinedUserCount}명</p>
         </div>
         <div className="cursor-pointer" onClick={() => setIsOpen(true)}>
-          <Image src="/icons/profile.svg" alt="close" width={28} height={28} />
+          <Image src="/icons/profile-icon.svg" alt="close" width={24} height={24} />
         </div>
       </div>
 
