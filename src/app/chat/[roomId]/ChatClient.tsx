@@ -77,8 +77,18 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
   const displayMessages = messages.length > 0 ? messages : MOCK_MESSAGES;
 
   const onClickInput = () => {
-    if (!userInfoData?.data) setIsLoginModalOpen(true);
-    return;
+    if (!userInfoData?.data) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+  };
+
+  const handleFocus = (e: React.FocusEvent<HTMLTextAreaElement>) => {
+    if (!userInfoData?.data) {
+      e.preventDefault();
+      e.target.blur();
+      setIsLoginModalOpen(true);
+    }
   };
 
   const handleSend = () => {
@@ -213,6 +223,8 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={keyboardDown}
+            onFocus={handleFocus}
+            readOnly={!userInfoData?.data}
             className="w-full h-full resize-none bg-transparent text-font-primary body2 font-medium focus:outline-none"
             placeholder="메시지를 입력해주세요"
           />
