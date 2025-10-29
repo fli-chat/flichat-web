@@ -112,7 +112,7 @@ export default function UserSidebar() {
             </div>
 
             {/* 사용자 프로필 */}
-            <div className="flex flex-col items-center px-[20px] py-[32px]">
+            <div className="flex flex-col items-center px-[20px] py-[32px] pb-[0px]">
               {/* 프로필 이미지 */}
               <div className="mb-[20px]">
                 <Image src={convertProfileColorType(userInfoData?.data.profileColorType as ProfileColorType | ProfileColorType.PURPLE)} alt="profile" className="w-[77px] h-[77px]" width={77} height={77} />
@@ -123,7 +123,7 @@ export default function UserSidebar() {
             </div>
 
             {/* 구분선 */}
-            <div className="mt-[70px] h-[1px] bg-semantic-secondary mx-[20px]"></div>
+            <div className="mt-[48px] h-[1px] bg-semantic-secondary mx-[20px]"></div>
 
 
 
