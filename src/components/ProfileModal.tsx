@@ -121,82 +121,92 @@ export default function ProfileModal({ reportPayload, profile, setIsProfileModal
 
   return (
     <>
-      {!isReportModalOpen && (
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[373px] bg-semantic-teriary rounded-[10px] md:w-[320px]">
-          <div className="px-[20px] py-[24px] pb-[32px]">
-            <div className="w-full flex justify-end">
-              <Image
-                src="/icons/close.svg"
-                alt="close"
-                className="cursor-pointer hover:opacity-70 transition-opacity duration-200"
-                onClick={() => setIsProfileModalOpen(false)}
-                width={24}
-                height={24}
-              />
-            </div>
+      {/* Background Overlay */}
+      <div
+        className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm z-40"
+        onClick={() => setIsProfileModalOpen(false)}
+      />
 
-            <div className="w-full flex flex-col items-center gap-[16px] justify-center pt-[16px]">
-              <Image src={convertProfileColorType(profile.profileColorType)} alt="profile" className="w-[80px] h-[80px]" width={80} height={80} />
-              <p className="title4 font-bold text-font-primary">{profile.nickName}</p>
-            </div>
-          </div>
+      <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
+        <div className="pointer-events-auto">
+          {!isReportModalOpen && (
+            <div className="w-[373px] bg-semantic-teriary rounded-[10px] md:w-[320px]">
+              <div className="px-[20px] py-[24px] pb-[32px]">
+                <div className="w-full flex justify-end ">
+                  <Image
+                    src="/icons/close.svg"
+                    alt="close"
+                    className="cursor-pointer hover:opacity-70 transition-opacity duration-200"
+                    onClick={() => setIsProfileModalOpen(false)}
+                    width={24}
+                    height={24}
+                  />
+                </div>
 
-          <div className="w-full h-[1px] bg-semantic-fourth" />
-          <div className="pt-[16px] flex flex-col pb-[24px]" onClick={onClickBlock}>
-            <div className="flex items-center gap-[8px] px-[20px] py-[16px] cursor-pointer hover:bg-semantic-fourth transition-colors duration-200">
-              <Image src="/icons/block.svg" alt="block" width={24} height={24} />
-              <p className="body1 font-medium text-font-primary">사용자 차단하기</p>
+                <div className="w-full flex flex-col items-center gap-[16px] justify-center pt-[16px]">
+                  <Image src={convertProfileColorType(profile.profileColorType)} alt="profile" className="w-[80px] h-[80px]" width={80} height={80} />
+                  <p className="title4 font-bold text-font-primary">{profile.nickName}</p>
+                </div>
+              </div>
+
+              <div className="w-full h-[1px] bg-semantic-fourth" />
+              <div className="pt-[16px] flex flex-col pb-[24px]" onClick={onClickBlock}>
+                <div className="flex items-center gap-[8px] px-[20px] py-[16px] cursor-pointer hover:bg-semantic-fourth transition-colors duration-200">
+                  <Image src="/icons/block.svg" alt="block" width={24} height={24} />
+                  <p className="body1 font-medium text-font-primary">사용자 차단하기</p>
+                </div>
+                <div
+                  className="flex items-center gap-[8px] px-[20px] py-[16px] cursor-pointer hover:bg-semantic-fourth transition-colors duration-200"
+                  onClick={onClickReport}
+                >
+                  <Image src="/icons/report.svg" alt="report" width={24} height={24} />
+                  <p className="body1 font-medium text-font-primary">사용자 신고하기</p>
+                </div>
+              </div>
             </div>
-            <div
-              className="flex items-center gap-[8px] px-[20px] py-[16px] cursor-pointer hover:bg-semantic-fourth transition-colors duration-200"
-              onClick={onClickReport}
-            >
-              <Image src="/icons/report.svg" alt="report" width={24} height={24} />
-              <p className="body1 font-medium text-font-primary">사용자 신고하기</p>
-            </div>
-          </div>
+          )}
+
+          {/* 신고 모달 */}
+          {isReportModalOpen && (
+            <ReportModal
+              onClose={() => setIsReportModalOpen(false)}
+              handleReport={handleReport}
+              selectedReason={selectedReason}
+              setSelectedReason={setSelectedReason}
+            />
+          )}
+
+          {/* 신고 선택 모달 */}
+          {isReportSelectModalOpen && (
+            <ReportSelectModal
+              onClickReportSuccess={onClickReportSuccess}
+              onClose={() => setIsReportSelectModalOpen(false)}
+            />
+          )}
+
+          {/* 신고 성공 모달 */}
+          {isReportSuccessModalOpen && (
+            <ReportSuccessModal
+              onClose={() => setIsReportSuccessModalOpen(false)}
+            />
+          )}
+
+          {/* 차단 선택 모달 */}
+          {isBlockSelectModalOpen && (
+            <BlockSelectModal
+              onClickBlockSuccess={onClickBlockSuccess}
+              onClose={() => setIsBlockSelectModalOpen(false)}
+            />
+          )}
+
+          {/* 차단 성공 모달 */}
+          {isBlockSuccessModalOpen && (
+            <BlockSuccessModal
+              onClose={() => setIsBlockSuccessModalOpen(false)}
+            />
+          )}
         </div>
-      )}
-
-      {/* 신고 모달 */}
-      {isReportModalOpen && (
-        <ReportModal
-          onClose={() => setIsReportModalOpen(false)}
-          handleReport={handleReport}
-          selectedReason={selectedReason}
-          setSelectedReason={setSelectedReason}
-        />
-      )}
-
-      {/* 신고 선택 모달 */}
-      {isReportSelectModalOpen && (
-        <ReportSelectModal
-          onClickReportSuccess={onClickReportSuccess}
-          onClose={() => setIsReportSelectModalOpen(false)}
-        />
-      )}
-
-      {/* 신고 성공 모달 */}
-      {isReportSuccessModalOpen && (
-        <ReportSuccessModal
-          onClose={() => setIsReportSuccessModalOpen(false)}
-        />
-      )}
-
-      {/* 차단 선택 모달 */}
-      {isBlockSelectModalOpen && (
-        <BlockSelectModal
-          onClickBlockSuccess={onClickBlockSuccess}
-          onClose={() => setIsBlockSelectModalOpen(false)}
-        />
-      )}
-
-      {/* 차단 성공 모달 */}
-      {isBlockSuccessModalOpen && (
-        <BlockSuccessModal
-          onClose={() => setIsBlockSuccessModalOpen(false)}
-        />
-      )}
+      </div>
     </>
   )
 }

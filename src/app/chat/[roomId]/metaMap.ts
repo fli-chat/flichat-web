@@ -40,4 +40,18 @@ openGraph: {
       locale: 'ko_KR',
     },
   },
+  128: {
+    title: "<굿뉴스> 후기 채팅방 - 솔직 후기 · 시청자 반응",
+    description: "〈굿뉴스〉를 함께 보며 인물들의 선택, 메시지, 감정선에 대해 솔직한 의견을 나누는 오픈채팅방. 장면 분석부터 여운까지 함께 이야기해요.",
+    keywords: "채팅, 굿뉴스, 영화, 드라마, 후기, 실시간, 토론, 콘텐츠, 오픈채팅, Flichat 플리챗",
+    openGraph: {
+      title: "<굿뉴스> 후기 채팅방 - 솔직 후기 · 시청자 반응",
+      description: "〈굿뉴스〉를 함께 보며 인물 관계, 주요 장면, 감정 포인트에 대한 시청자들의 다양한 반응을 공유하는 오픈채팅방입니다.",
+      siteName: "Flichat 플리챗",
+      type: "website",
+      url: "https://chatting.flichat.co.kr/chat/128",
+      locale: "ko_KR",
+    },
+  },
+
 };

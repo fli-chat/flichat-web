@@ -1,11 +1,16 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import RQProvider from '@/libs/RQProvider';
 import { Toaster } from 'react-hot-toast';
 import MixpanelProvider from '@/libs/MixpanelProvider';
+import localFont from 'next/font/local';
 
-const inter = Inter({ subsets: ['latin'] });
+const pretendard = localFont({
+  src: './fonts/PretendardVariable.woff2',
+  display: 'swap',
+  weight: '100 900',
+  variable: '--font-pretendard',
+});
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const metadata: Metadata = {
@@ -29,7 +34,7 @@ export default function RootLayout({
         <meta name="google-site-verification" content="_uCvUXZVi-dzExe44ojvjnUdfgFn98SyQSD8jEL5GCY" />
         <meta name="naver-site-verification" content="c4823fbc1c0582f9be53f316de9f7ac4c8a65fbf" />
       </head>
-      <body className={inter.className}>
+      <body className={pretendard.className}>
         <MixpanelProvider>
 
           <RQProvider>
