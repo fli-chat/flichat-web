@@ -159,7 +159,7 @@ export const MOCK_MESSAGES_3 = [
     roomId: 112,
   },
   {
-    id: 'mock-3',
+    id: 'mock-4',
     userId: 'mock-user-3',
     sender: '드라마만봐',
     message: '맞아요. 그냥 ‘괜찮다’는 말 듣는 기분이었어요.',
@@ -168,7 +168,7 @@ export const MOCK_MESSAGES_3 = [
     roomId: 112,
   },
   {
-    id: 'mock-3',
+    id: 'mock-5',
     userId: 'mock-user-3',
     sender: '이시라님',
     message: 'OST도 너무 좋아서 바로 저장했어요ㅋㅋ',
@@ -177,7 +177,7 @@ export const MOCK_MESSAGES_3 = [
     roomId: 112,
   },
   {
-    id: 'mock-3',
+    id: 'mock-6',
     userId: 'mock-user-3',
     sender: '매니아매니아',
     message: '그 장면에서 그 노래 나올 때 진짜 완벽했죠ㅠ',
@@ -186,7 +186,7 @@ export const MOCK_MESSAGES_3 = [
     roomId: 112,
   },
   {
-    id: 'mock-3',
+    id: 'mock-7',
     userId: 'mock-user-3',
     sender: '드라마만봐',
     message: '여운이 오래가요... 끝나고 한참 멍했어요.',

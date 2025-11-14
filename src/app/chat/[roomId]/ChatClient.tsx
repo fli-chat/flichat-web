@@ -88,6 +88,7 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
   }
 
   const displayMessages = messages.length > 0 ? messages : mockMessage();
+  console.log(displayMessages);
 
   const onClickInput = () => {
     if (!userInfoData?.data) {
