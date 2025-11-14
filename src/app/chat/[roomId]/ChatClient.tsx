@@ -14,7 +14,7 @@ import ProfileModal from "@/components/ProfileModal";
 import LoginModal from "@/components/LoginModal";
 import AppInstallModal from "@/components/AppInstallModal";
 import { parseTitle } from "@/utils/parseTitle";
-import { MOCK_MESSAGES } from "@/app/chat/[roomId]/chatMock";
+import { MOCK_MESSAGES, MOCK_MESSAGES_2, MOCK_MESSAGES_3, MOCK_MESSAGES_4 } from "@/app/chat/[roomId]/chatMock";
 
 const convertProfileColorType = (profileColorType: ProfileColorType) => {
   switch (profileColorType) {
@@ -74,7 +74,20 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
     userInfoData?.data?.userId ?? ''
   );
 
-  const displayMessages = messages.length > 0 ? messages : MOCK_MESSAGES;
+  const mockMessage = () => {
+    switch (roomId) {
+      case 8:
+        return MOCK_MESSAGES;
+      case 117:
+        return MOCK_MESSAGES_2;
+      case 112:
+        return MOCK_MESSAGES_3;
+      case 128:
+        return MOCK_MESSAGES_4;
+    }
+  }
+
+  const displayMessages = messages.length > 0 ? messages : mockMessage();
 
   const onClickInput = () => {
     if (!userInfoData?.data) {
@@ -171,8 +184,8 @@ export default function ChatClient({ roomId, title }: { roomId: number, title: s
 
       {/* chat list */}
       <div ref={chatContainerRef} className="overflow-y-scroll h-dvh pb-[146px]">
-        {displayMessages.map((m: any) => {
-          const isMe = m.userId === (userInfoData?.data?.userId || 'mock-user-1');
+        {displayMessages && displayMessages.map((m: any) => {
+          const isMe = m.userId === (userInfoData?.data?.userId || 'mock-user-100');
           const key = (m as any).clientMessageId ?? m.id ?? `${m.timeStamp}-${m.userId}`;
 
           return (
