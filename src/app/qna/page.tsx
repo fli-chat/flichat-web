@@ -14,29 +14,49 @@ interface Question {
 const sampleQuestions: Question[] = [
   {
     id: 1,
-    question: "이 앱은 어떤 기능을 제공하나요?",
-    answer: "이 앱은 최근 인기 있는 영화나 콘텐츠를 주제로, 사용자들이 자유롭게 의견을 나눌 수 있는 오픈채팅 플랫폼입니다. 실시간 채팅을 통해 다양한 사람들과 영화 감상을 공유하고 토론할 수 있어요.",
+    question: "피로몽(Piromong)은 어떤 서비스인가요?",
+    answer:
+      "피로몽은 매일 4단계 피로도 체크를 통해 오늘의 컨디션을 분석하고, 결과 해석과 실천 가이드를 제공하는 서비스입니다.",
     category: "기능",
     isOpen: false,
   },
   {
     id: 2,
-    question: "욕설이나 불쾌한 메시지를 보는 경우 어떻게 하나요?",
-    answer: "앱에는 욕설 및 부적절한 표현을 자동 감지해 가려주는 필터링 기능이 적용되어 있어, 쾌적한 대화 환경을 유지할 수 있습니다. 또한, 불쾌감을 주는 사용자는 차단하거나 신고할 수 있으며, 신고된 사용자는 운영팀의 검토를 거쳐 경고, 이용 제한, 영구 제재 등의 조치를 받을 수 있습니다.",
-    category: "안전",
+    question: "로그인 없이도 이용할 수 있나요?",
+    answer:
+      "아니요. 피로몽은 소셜 로그인 후 이용할 수 있으며, 첫 로그인 시 닉네임 설정을 완료하면 서비스를 사용할 수 있습니다.",
+    category: "이용",
     isOpen: false,
   },
   {
     id: 3,
-    question: "계정을 탈퇴하려면 어떻게 하나요?",
-    answer: "설정 > 내 계정 > 계정 탈퇴 메뉴를 통해 언제든지 탈퇴하실 수 있습니다. 탈퇴 시, 사용자의 모든 정보는 관련 법령에 따라 안전하게 처리됩니다.",
+    question: "어떤 로그인 방식을 지원하나요?",
+    answer:
+      "카카오, 구글, 애플 로그인(iOS)을 지원합니다.",
     category: "계정",
     isOpen: false,
   },
   {
     id: 4,
+    question: "피로도 결과에서는 무엇을 확인할 수 있나요?",
+    answer:
+      "오늘의 컨디션 요약, 신체/인지/정서/수면·회복 상태, 그리고 즉시 실천할 수 있는 행동 가이드를 확인할 수 있습니다.",
+    category: "기능",
+    isOpen: false,
+  },
+  {
+    id: 5,
+    question: "계정을 탈퇴하려면 어떻게 하나요?",
+    answer:
+      "앱에서 설정 > 탈퇴하기 경로로 요청할 수 있습니다. 처리 기간은 접수 후 최대 30일이며, 자세한 내용은 계정 및 데이터 삭제 안내에서 확인할 수 있습니다.",
+    category: "계정",
+    isOpen: false,
+  },
+  {
+    id: 6,
     question: "고객 지원은 어디에서 받을 수 있나요?",
-    answer: "앱 사용 중 문제가 발생하거나 문의사항이 있으실 경우, teamtuesa@gmail.com 으로 문의해 주세요. 운영팀이 최대한 빠르게 응답 드릴 수 있도록 노력하겠습니다.",
+    answer:
+      "설정의 의견 보내기 또는 문의 폼을 통해 문의할 수 있습니다.",
     category: "지원",
     isOpen: false,
   },
@@ -143,7 +163,7 @@ export default function QnA() {
       {/* 헤더 */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">자주 묻는 질문</h1>
-        <p className="text-gray-600">Flichat 사용 중 궁금한 점들을 확인해보세요.</p>
+        <p className="text-gray-600">피로몽(Piromong) 사용 중 궁금한 점들을 확인해보세요.</p>
       </div>
 
       {/* 검색 */}
