@@ -25,5 +25,6 @@ dist-ssr
 
 .next/
 .next/cache
+.npm-cache/
 
 .env
